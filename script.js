@@ -31,6 +31,8 @@ function pauseplay(){
 }
 
 
+var wall = new Wall;
+
 //draw
 
 function draw(){
@@ -39,6 +41,10 @@ function draw(){
 
   ball.draw();
   ball.update();
+  
+  wall.draw();
+  wall.update();
+  
     }
 
 
@@ -52,9 +58,12 @@ function checkKey(e) {
     }
 }
 
+document.body.addEventListener("touchstart", handleTouch, false);
 
 
-
+function handleTouch() {
+ ball.jump();
+}
 
 
 
@@ -103,4 +112,33 @@ function Ball(){
 		this.vel.y += this.acc.y;
 	}
 
+}
+
+
+
+
+function Wall(){
+	this.x = 500;
+	this.y = 350;
+	this.radius = 30;
+
+
+	this.draw = function(){
+
+		ctx.beginPath();
+		ctx.rect(this.x,this.y,50,100);
+		ctx.closePath();
+		ctx.fill();
+
+	}
+	
+	this.vel = {x: -1, y: 0};
+	
+	this.update = function(){
+
+		this.x += this.vel.x;
+		this.y += this.vel.y;
+
+	}
+	
 }
