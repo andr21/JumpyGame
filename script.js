@@ -31,7 +31,8 @@ function pauseplay(){
 }
 
 
-var wall = new Wall;
+//var wall = new Wall;
+var wallmanager = new WallManager;
 
 //draw
 
@@ -42,8 +43,8 @@ function draw(){
   ball.draw();
   ball.update();
   
-  wall.draw();
-  wall.update();
+  wallmanager.draw();
+  wallmanager.update();
   
     }
 
@@ -118,15 +119,18 @@ function Ball(){
 
 
 function Wall(){
-	this.x = 500;
-	this.y = 350;
+
+	this.width = 50;
+	this.height = Math.random()*300 + 50;
+	this.x = c.width + this.width;
+	this.y = c.height - this.height;
 	this.radius = 30;
 
 
 	this.draw = function(){
 
 		ctx.beginPath();
-		ctx.rect(this.x,this.y,50,100);
+		ctx.rect(this.x,this.y,this.width,this.height);
 		ctx.closePath();
 		ctx.fill();
 
@@ -141,4 +145,44 @@ function Wall(){
 
 	}
 	
+}
+
+function WallManager(){
+
+	this.walls = [];
+
+	this.tick = 0;
+	this.frequency = 300;
+
+	this.update = function(){
+		
+		if(this.tick === this.frequency){
+
+			this.walls[this.walls.length] = new Wall();
+
+			this.tick = 0;
+		} else {
+			this.tick = this.tick + 1;
+		}
+
+
+		for(var i = 0; i <= this.walls.length-1; i++) {
+
+			this.walls[i].update();
+		}
+
+
+		
+	}
+
+	this.draw = function(){
+
+		for(var i = 0; i <= this.walls.length-1; i++) {
+
+			this.walls[i].draw();
+		}
+	}
+
+
+
 }
