@@ -6,7 +6,7 @@ function Wall(){
 	this.y = c.height - this.height;
 
 
-	this.wallspeed = 2;
+	this.wallspeed = 4;
 
 	this.gone = false;
 
@@ -94,8 +94,8 @@ function WallManager(){
 	var topwall = new TopWall
 	this.walls = [topwall];
 
-	this.tick = 0;
-	this.frequency = 300;
+	this.tick = 199;
+	this.frequency = 200;
 
 	this.update = function(){
 		

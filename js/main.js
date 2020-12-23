@@ -11,6 +11,9 @@ to do:
 var c = document.getElementById("canvas");
 var ctx = c.getContext("2d");
 
+var scorecounter = document.querySelector("#score");
+
+
 c.width = 900;
 c.height = 450;
 
@@ -30,7 +33,7 @@ pauseplay();
 function pauseplay(){
 
   if(pause == true){
-    game = setInterval(draw,10);
+    game = setInterval(draw,15);
     pause = false;
     console.log('Game unpaused');
   }else{
@@ -41,7 +44,12 @@ function pauseplay(){
 
 }
 
+function restartgame(){
 
+	ball = new Ball;
+	wallmanager = new WallManager;
+
+}
 
 
 
@@ -62,6 +70,8 @@ function draw(){
   wallmanager.update();
 
   ball.checkCollision(wallmanager.walls);
+
+  scorecounter.innerHTML = ball.score;
 
     }
 

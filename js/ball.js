@@ -3,7 +3,9 @@ function Ball(){
 	this.y = 350;
 	this.radius = 30;
 
-	this.jumppower = 3.5
+	this.score = 0;
+
+	this.jumppower = 3.6
 	this.gravity = 0.06;
 
 	this.dead = false;
@@ -61,6 +63,10 @@ function Ball(){
 
 		this.vel.x += this.acc.x;
 		this.vel.y += this.acc.y;
+
+		if(this.dead === false){
+			this.score ++;
+		}
 	}
 
 
