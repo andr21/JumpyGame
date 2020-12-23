@@ -1,4 +1,12 @@
 
+
+
+/*
+to do:
+- ball dies when hit
+
+*/
+
 //global variables
 var c = document.getElementById("canvas");
 var ctx = c.getContext("2d");
@@ -6,12 +14,13 @@ var ctx = c.getContext("2d");
 c.width = 900;
 c.height = 450;
 
-var ground = 50;
+var ground = 40;
 
 var ball = new Ball;
 var wallmanager = new WallManager;
+//var topwall	= new TopWall;
 
-var drawRectLines = true;
+var drawRectLines = false;
 
 
 var game;
@@ -47,12 +56,13 @@ function draw(){
 
   ball.draw();
   ball.update();
+
   
   wallmanager.draw();
   wallmanager.update();
 
-
   ball.checkCollision(wallmanager.walls);
+
     }
 
 

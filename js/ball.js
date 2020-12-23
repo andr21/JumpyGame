@@ -3,6 +3,11 @@ function Ball(){
 	this.y = 350;
 	this.radius = 30;
 
+	this.jumppower = 3.5
+	this.gravity = 0.06;
+
+	this.dead = false;
+
 	this.rect = {width: 50, height: 50}
 
 	this.draw = function(){
@@ -10,6 +15,10 @@ function Ball(){
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
 		ctx.closePath();
+		ctx.fillStyle = "#000000";
+		if(this.dead === true){
+			ctx.fillStyle = "#FF0000";
+		}
 		ctx.fill();
 
 
@@ -25,14 +34,14 @@ function Ball(){
 	}
 
 	this.vel = {x: 0, y: 0};
-	this.acc = {x: 0, y: 0.08};
+	this.acc = {x: 0, y: this.gravity};
 
 	this.jump = function(){
 		if(this.y >= c.height - ground){
 			this.y = c.height - ground - 0.01
 		}
-		this.vel = {x: 0, y: -4};
-		this.acc = {x: 0, y: 0.08};
+		this.vel = {x: 0, y: this.jumppower * -1};
+		this.acc = {x: 0, y: this.gravity};
 	}
 
 
@@ -70,6 +79,7 @@ function Ball(){
 			   rect1.y + rect1.height > rect2.y) {
 			    // collision detected!
 			console.log('collision')
+			this.dead = true;
 			}
 		}
 
