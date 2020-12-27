@@ -110,7 +110,7 @@ function WallManager(){
 		}
 
 		//remove all walls that have gone off screen
-		for(var i = 0; i <= this.walls.length-1; i++) {
+		for(var i = 0; i < this.walls.length; i++) {
 			if(this.walls[i].gone === true){
 
 				this.walls.splice(i,1);
@@ -121,7 +121,7 @@ function WallManager(){
 
 
 		//update all the walls
-		for(var i = 0; i <= this.walls.length-1; i++) {
+		for(var i = 0; i < this.walls.length; i++) {
 
 			this.walls[i].update();
 		}
@@ -132,7 +132,7 @@ function WallManager(){
 
 	this.draw = function(){
 
-		for(var i = 0; i <= this.walls.length-1; i++) {
+		for(var i = 0; i < this.walls.length; i++) {
 
 			this.walls[i].draw();
 		}

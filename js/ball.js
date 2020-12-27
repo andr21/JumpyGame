@@ -76,7 +76,7 @@ function Ball(){
 
 		var rect1 = {x: this.x - this.rect.width/2, y: this.y - this.rect.height/2, width: this.rect.width, height: this.rect.height}
 		
-		for(var i = 0; i <= listOfWalls.length-1; i++) {
+		for(var i = 0; i < listOfWalls.length; i++) {
 		var rect2 = {x: listOfWalls[i].x, y: listOfWalls[i].y, width: listOfWalls[i].width, height: listOfWalls[i].height}
 
 			if (rect1.x < rect2.x + rect2.width &&
