@@ -1,17 +1,21 @@
 
-var banana = new Genome(3,3);
+var banana = new Genome(3,1);
 
 
-Genome.prototype.draw = function(width = 400, height = 400, container = "svgContainer"){
 
-		var element = document.getElementById(this.id);
-		if (element)
-			element.parentNode.removeChild(element);
+Genome.prototype.draw = function(width = 500, height = 400){
 
-		var svg = d3.select("body").append("svg")
+
+
+var element = document.getElementById("graph");
+		if (element){
+element.parentNode.removeChild(element);
+}
+
+		var svg = d3.select("#svgContainer").append("svg")
 			.attr("width", width)
 			.attr("height", height)
-			.attr("id", this.id);
+			.attr("id", "graph");
 
 
 		var force = d3.layout.force()
@@ -52,8 +56,8 @@ Genome.prototype.draw = function(width = 400, height = 400, container = "svgCont
 			.data(connections)
 			.enter().append("line")
 			.attr("class", "link")
-			.style("stroke-width", function (d) { return d.enabled ? (d.weight > 0 ? 0.3 + d.weight : 0.3 + d.weight*-1) : 0 })
-			.style("stroke", function (d) { return d.weight > 0 ? "#0f0" : "#f00"; });
+			.style("stroke-width", function (d) { return d.enabled ? (d.weight > 0 ? 0.3 + d.weight*3 : 0.3 + d.weight*-3) : 0 })
+			.style("stroke", function (d) { return d.weight > 0 ? "#28B463" : "#C0392B"; });
 
 		var node = svg.selectAll(".node")
 			.data(nodes)
@@ -63,12 +67,12 @@ Genome.prototype.draw = function(width = 400, height = 400, container = "svgCont
 
 		node.append("circle")
 			.attr("r", "10")
-			.attr("fill", function (d) { return d.layer == 0 ? "#00f" : d.output ? "#f00" : "#000" });
+			.attr("fill", function (d) { return d.layer == 0 ? "#515A5A" : d.output ? "#1B2631" : "#2E86C1" });
 		
 		node.append("text")
 			.attr("dx", 12)
 			.attr("dy", ".35em")
-			.text(function(d) { return d.number + (d.layer > 0 ? "(" + "HELLO" + ")" : null) });
+			.text(function(d) { return d.number + (d.layer > 0 ? "(" + "Output" + ")" : null) });
 		
 
 		force.on("tick", function () {
@@ -85,3 +89,4 @@ Genome.prototype.draw = function(width = 400, height = 400, container = "svgCont
 	}
 
 
+banana.draw();
