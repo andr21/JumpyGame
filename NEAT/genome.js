@@ -1,6 +1,8 @@
 
 
 function Genome(inp, out, offSpring = false){
+
+//Initialisation
 	this.inputs = inp; //number of inputs
 	this.outputs = out; //number of outputs
 
@@ -37,7 +39,46 @@ function Genome(inp, out, offSpring = false){
 
 
 
+//Mutations
 
+this.mutate = function(){
+	console.log('mutating...');
+
+	if(Math.random() < 0.8) { //80%
+		//Mutate connection weights
+		console.log('Mutate connection weights')
+		for(var i = 0; i < this.connections.length; i++) {
+			this.connections[i].mutateWeight();
+		}
+
+	}
+
+	if(Math.random() < 0.5) { //50%
+		//Mutate node bias'
+		console.log('Mutate node bias')
+		for(var i = 0; i < this.nodes.length; i++) {
+			this.nodes[i].mutateBias();
+		}
+	}
+
+
+	//Mutate node activation function?
+
+	//Add a connection
+
+	//Add a node
+
+
+}
+
+
+
+
+
+
+
+
+//Utilities
 
 	this.getNode = function(x){ //returns the index of a node with that Number
 		for(var i = 0; i < this.nodes.length; i++) {

@@ -1,12 +1,6 @@
 
 
 
-/*
-to do:
-- ball dies when hit
-
-*/
-
 //global variables
 var c = document.getElementById("canvas");
 var ctx = c.getContext("2d");

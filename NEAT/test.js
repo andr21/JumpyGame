@@ -1,4 +1,22 @@
 
+
+//to do
+// how should connection weights and node bias' be amended "peturbed"?
+// activation functions???
+// when adding a node, delete the old connection or disable it?
+
+	randomGaussian = function(mew = 0,sd = 1){
+		var random_x = Math.random()*0;
+
+		var stuff = -0.5*(((random_x-mew)^2)/(sd^2));
+		console.log('x: ' + random_x);
+		console.log('stuff: ' + stuff);
+		return (1/(sd*Math.sqrt(2*Math.PI)))*Math.pow(Math.E,stuff);
+
+	}
+
+
+
 var banana = new Genome(4,4);
 
 
