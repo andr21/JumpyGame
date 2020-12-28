@@ -1,5 +1,5 @@
 
-var banana = new Genome(3,1);
+var banana = new Genome(4,4);
 
 
 
