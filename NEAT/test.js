@@ -3,37 +3,32 @@
 //to do
 // how should connection weights and node bias' be amended "peturbed"?
 // activation functions???
-// when adding a node, delete the old connection or disable it?
-
-	randomGaussian = function(mew = 0,sd = 1){
-		var random_x = Math.random()*0;
-
-		var stuff = -0.5*(((random_x-mew)^2)/(sd^2));
-		console.log('x: ' + random_x);
-		console.log('stuff: ' + stuff);
-		return (1/(sd*Math.sqrt(2*Math.PI)))*Math.pow(Math.E,stuff);
-
-	}
+// when adding a node, delete the old connection or disable it? this would impact fullyConnected() also.
 
 
 
-var banana = new Genome(4,4);
+
+
+var banana = new Genome(2,1);
+
+function boob(){
+	banana.mutate();
+	banana.draw();
+}
+
+Genome.prototype.draw = function(width = 500, height = 400, container = "#svgContainer"){
 
 
 
-Genome.prototype.draw = function(width = 500, height = 400){
-
-
-
-var element = document.getElementById("graph");
+var element = document.getElementById("svg_graph");
 		if (element){
 element.parentNode.removeChild(element);
 }
 
-		var svg = d3.select("#svgContainer").append("svg")
+		var svg = d3.select(container).append("svg")
 			.attr("width", width)
 			.attr("height", height)
-			.attr("id", "graph");
+			.attr("id", "svg_graph");
 
 
 		var force = d3.layout.force()
@@ -90,7 +85,7 @@ element.parentNode.removeChild(element);
 		node.append("text")
 			.attr("dx", 12)
 			.attr("dy", ".35em")
-			.text(function(d) { return d.number + (d.layer > 0 ? "(" + "Output" + ")" : null) });
+			.text(function(d) { return d.number + (d.output ? "(" + "Output" + ")" : null) });
 		
 
 		force.on("tick", function () {

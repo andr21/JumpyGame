@@ -5,6 +5,7 @@ function Node(num, lay, isOutput = false){
 
 	this.bias = Math.random() * 2 - 1; //Bias between -1 and 1
 	this.output = isOutput;
+	//TODO: activation functions?
 
 	this.inputSum = 0;
 	this.outputValue = 0;
@@ -18,14 +19,8 @@ function Node(num, lay, isOutput = false){
 			this.bias = Math.random() * 2 - 1;
 		else //90% chance to amend weight
 
-			//this needs thinking about/investigating
-			var peturbBias;
-			if(Math.random()<0.5){
-				peturbBias = 0.1;
-			} else {
-				peturbBias = -0.1
-			}
-			this.bias += peturbBias;
+			//TODO this needs thinking about/investigating
+			this.bias += rand_bm()/50;
 	}
 
 

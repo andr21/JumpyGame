@@ -27,10 +27,7 @@ function Genome(inp, out, offSpring = false){
 		for(var i = 0; i < this.inputs; i++) {
 			for(var j = this.inputs; j < this.inputs + this.outputs; j++) {
 
-				//what should the initial weights be?
-				//var weight = Math.random() * this.inputs * Math.sqrt(2/this.inputs);
-				var weight = Math.random() * 2 - 1;
-				this.connections.push(new Connection(this.nodes[i],this.nodes[j], weight));
+				this.connections.push(new Connection(this.nodes[i],this.nodes[j]));
 			}
 		}
 
@@ -39,37 +36,165 @@ function Genome(inp, out, offSpring = false){
 
 
 
+
+
+	//Crossover
+	this.crossover = function(partner){
+		//TODO: find a good way to generate unique ids
+		var offSpring = new Genome(this.inputs, this.outputs, true); //Child genome
+		offSpring.nextNode = this.nextNode; 
+
+
+		//Take all nodes from this parent - output node activation 50%-50%
+		for(var i = 0; i < this.nodes.length; i++){
+			var node = this.nodes[i].clone();
+			if(node.output) {
+				//TODO: activation functions?
+				//var partnerNode = partner.nodes[partner.getNode(node.number)];
+				//if(Math.random() > 0.5) {
+				//	node.activationFunction = partnerNode.activationFunction;
+				//	node.bias = partnerNode.bias;
+				//}
+			}
+			offSpring.nodes.push(node);
+		}
+		
+		//Randomly take shared connections from this or the partner network
+		var maxLayer = 0;
+		for(var i = 0; i < this.connections.length; i++) {
+			var index = this.commonConnection(this.connections[i].getInnovationNumber(), partner.connections);
+			
+			if(index != -1) { //There is a commonConnection
+				var conn = Math.random() > 0.5 ? this.connections[i].clone() : partner.connections[index].clone();
+				
+				//Reassign nodes
+				var fromNode = offSpring.nodes[offSpring.getNode(conn.fromNode.number)];
+				var toNode = offSpring.nodes[offSpring.getNode(conn.toNode.number)];
+				conn.fromNode = fromNode;
+				conn.toNode = toNode;
+
+				//Add this connection to the child
+				if(fromNode && toNode){
+					offSpring.connections.push(conn);
+				}
+				
+			} else { //No common connection -> take from this
+				let conn = this.connections[i].clone();
+				
+				//Reassign nodes
+				let fromNode = offSpring.nodes[offSpring.getNode(conn.fromNode.number)];
+				let toNode = offSpring.nodes[offSpring.getNode(conn.toNode.number)];
+				conn.fromNode = fromNode;
+				conn.toNode = toNode;
+
+				//Add this connection to the child
+				if(fromNode && toNode){
+					offSpring.connections.push(conn);
+				}
+			}
+		}
+
+		offSpring.layers = this.layers;
+		return offSpring;
+	}
+
+
+
+
 //Mutations
 
 this.mutate = function(){
 	console.log('mutating...');
 
+//Mutate connection weights
 	if(Math.random() < 0.8) { //80%
-		//Mutate connection weights
-		console.log('Mutate connection weights')
+		console.log('Mutate connection weights');
 		for(var i = 0; i < this.connections.length; i++) {
 			this.connections[i].mutateWeight();
 		}
 
 	}
 
+//Mutate node bias'
 	if(Math.random() < 0.5) { //50%
-		//Mutate node bias'
-		console.log('Mutate node bias')
+		console.log('Mutate node bias');
 		for(var i = 0; i < this.nodes.length; i++) {
 			this.nodes[i].mutateBias();
 		}
 	}
 
 
-	//Mutate node activation function?
+//Mutate node activation function?
+//?
+	
+//Add a connection
+	if(Math.random() < 0.05) { //5%
+		console.log('Add a connection');
+		this.addConnection();
+	}
 
-	//Add a connection
-
-	//Add a node
-
+//Add a node
+	if(Math.random() < 0.01) { //1%
+		console.log('Add a node');
+		this.addNode();
+	}
 
 }
+
+
+
+this.addNode = function(){
+	var connectionIndex = Math.floor(Math.random() * this.connections.length);
+	var pickedConnection = this.connections[connectionIndex];
+	pickedConnection.enabled = false;
+	this.connections.splice(connectionIndex,1); //delete the connection
+
+	//Create new node
+	var newNode = new Node(this.nextNode, pickedConnection.fromNode.layer + 1);
+	this.nodes.forEach((node) => { //Shift all nodes layer value
+		if (node.layer > pickedConnection.fromNode.layer)
+			node.layer++;
+	});
+
+	var newConnection1 = new Connection(pickedConnection.fromNode, newNode);
+	var newConnection2 = new Connection(newNode, pickedConnection.toNode);
+
+	this.layers++;
+	this.connections.push(newConnection1); //Add connection
+	this.connections.push(newConnection2); //Add connection
+	this.nodes.push(newNode); //Add node
+	this.nextNode++;
+}
+
+
+
+this.addConnection = function(){
+	if(this.fullyConnected()){
+		console.log('unable to add connection, fully connected')
+		return; //Cannot adda connection as fully connected
+	}
+
+	//Two random nodes to connect
+	var node1 = Math.floor(Math.random() * this.nodes.length);
+	var node2 = Math.floor(Math.random() * this.nodes.length);
+
+	//*two valid nodes
+	while (this.nodes[node1].layer == this.nodes[node2].layer || this.nodesConnected(this.nodes[node1],this.nodes[node2])){
+		node1 = Math.floor(Math.random() * this.nodes.length);
+		node2 = Math.floor(Math.random() * this.nodes.length);
+	}
+
+	//switch nodes based on their layer
+	if (this.nodes[node1].layer > this.nodes[node2].layer) {
+		var temp = node1;
+		node1 = node2;
+		node2 = temp;
+	}
+
+	//add the connection
+	this.connections.push(new Connection(this.nodes[node1],this.nodes[node2]));
+}
+
 
 
 
@@ -88,7 +213,55 @@ this.mutate = function(){
 		}
 	}
 
+	this.fullyConnected = function(){
+		//check if the network is fully connected
+		var maxConnections = 0;
+		var nodesPerLayer = [];
+
+		//Calculate all possible connections
+		//(this works because all hidden nodes are on their own layer, so this is simply inputs and outputs cannot be connected to themselves)
+		this.nodes.forEach((node)=>{
+			if(nodesPerLayer[node.layer] != undefined){
+				nodesPerLayer[node.layer]++;
+			} else {
+				nodesPerLayer[node.layer] =1;
+			}
+		});
+
+		for(var i = 0; i < this.layers - 1; i++) {
+			for(var j = i + 1; j < this.layers; j++) {
+				maxConnections += nodesPerLayer[i] * nodesPerLayer[j];
+			}
+		}
+
+		//output
+		return maxConnections == this.connections.length;
+
+	}
 
 
+
+	this.nodesConnected = function(node1,node2){ //are two nodes connected?
+		for(var i = 0; i < this.connections.length; i++) {
+			var conn = this.connections[i];
+			if((conn.fromNode == node1 && conn.toNode == node2) || (conn.fromNode == node2 && conn.toNode == node1)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	this.commonConnection = function(innN, connections) {
+		//Search through all connections to check for
+		//one with the correct Innovation Number
+		for(let i = 0; i < connections.length; i++){
+			if(innN == connections[i].getInnovationNumber())
+				return i;
+		}
+
+		//Found nothing
+		return -1;
+	}
 
 }
