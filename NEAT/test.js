@@ -4,19 +4,20 @@
 // how should connection weights and node bias' be amended "peturbed"?
 // activation functions???
 // when adding a node, delete the old connection or disable it? this would impact fullyConnected() also.
+// mutate to be able to remove a connection maybe?
+// enable/disable connections
 
 
 
 
-
-var banana = new Genome(2,1);
+var banana = new Genome(3,2);
 
 function boob(){
 	banana.mutate();
 	banana.draw();
 }
 
-Genome.prototype.draw = function(width = 500, height = 400, container = "#svgContainer"){
+Genome.prototype.draw = function(width = 600, height = 400, container = "#svgContainer"){
 
 
 
@@ -79,13 +80,21 @@ element.parentNode.removeChild(element);
 			.call(force.drag);
 
 		node.append("circle")
-			.attr("r", "10")
+			//.attr("r", function (d) { return Math.abs(d.bias)*20})
+			.attr("r","10")
 			.attr("fill", function (d) { return d.layer == 0 ? "#515A5A" : d.output ? "#1B2631" : "#2E86C1" });
 		
 		node.append("text")
-			.attr("dx", 12)
+			.attr("dx", 14)
 			.attr("dy", ".35em")
-			.text(function(d) { return d.number + (d.output ? "(" + "Output" + ")" : null) });
+			.style("font-size", "12px")
+			.style("font-family", "Verdana, sans-serif")
+			//.text(function(d) { return d.number + (d.output ? "(" + "Output" + ")" : null) });
+			.text(function(d) { 
+				return d.number
+				+ (d.layer == 0 ? " Input " : d.output ? " Output " : "")
+				+ (d.layer > 0 ? "(" + activationsNames[d.activationFunction] + ")" : "")
+			});
 		
 
 		force.on("tick", function () {

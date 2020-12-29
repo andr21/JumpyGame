@@ -35,12 +35,48 @@ function Genome(inp, out, offSpring = false){
 	}
 
 
+	//Network Core
+	this.generateNetwork = function() {
+		//Clear all outputConnections in the nodes
+		this.nodes.forEach((node) => {
+			node.outputConnections.splice(0, node.outputConnections.length);
+		});
+
+		//Add the connections to the Nodes
+		this.connections.forEach((conn) => {
+			conn.fromNode.outputConnections.push(conn);
+		});
+
+		//Prepare for feed forward
+		this.sortByLayer();
+	}
+
+	this.feedForward = function(inputValues) {
+		this.generateNetwork(); //Connect all up
+
+		//Clear old inputs
+		this.nodes.forEach((node) => { node.inputSum = 0; });
+
+		//asin the values to input nodes
+		for (var i = 0; i < this.inputs; i++){
+			this.nodes[i].outputValue = inputValues[i];
+		}
+
+		//Engage all nodes and Extract the results from the outputs
+		let result = [];
+		this.nodes.forEach((node) => {
+			node.engage();
+
+			if (node.output)
+				result.push(node.outputValue);
+		});
+		return result;
+	}
 
 
 
 	//Crossover
 	this.crossover = function(partner){
-		//TODO: find a good way to generate unique ids
 		var offSpring = new Genome(this.inputs, this.outputs, true); //Child genome
 		offSpring.nextNode = this.nextNode; 
 
@@ -49,12 +85,11 @@ function Genome(inp, out, offSpring = false){
 		for(var i = 0; i < this.nodes.length; i++){
 			var node = this.nodes[i].clone();
 			if(node.output) {
-				//TODO: activation functions?
-				//var partnerNode = partner.nodes[partner.getNode(node.number)];
-				//if(Math.random() > 0.5) {
-				//	node.activationFunction = partnerNode.activationFunction;
-				//	node.bias = partnerNode.bias;
-				//}
+				var partnerNode = partner.nodes[partner.getNode(node.number)];
+				if(Math.random() > 0.5) {
+					node.activationFunction = partnerNode.activationFunction;
+					node.bias = partnerNode.bias;
+				}
 			}
 			offSpring.nodes.push(node);
 		}
@@ -124,9 +159,13 @@ this.mutate = function(){
 	}
 
 
-//Mutate node activation function?
-//?
-	
+//Mutate a node activation function
+	if(Math.random() < 0.1) { //10%
+		console.log('Changing a nodes activation function');
+		var i = Math.floor(Math.random() * this.nodes.length);
+		this.nodes[i].mutateActivation();
+	}
+
 //Add a connection
 	if(Math.random() < 0.05) { //5%
 		console.log('Add a connection');
@@ -262,6 +301,13 @@ this.addConnection = function(){
 
 		//Found nothing
 		return -1;
+	}
+
+	this.sortByLayer = function(){
+		//Sort all nodes by layer
+		this.nodes.sort((a, b) => {
+			return a.layer - b.layer;
+		});
 	}
 
 }

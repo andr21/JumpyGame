@@ -1,10 +1,10 @@
 
-function Connection(from, to){
+function Connection(from, to, weight = Math.random() * 2 - 1){
 	this.fromNode = from; //type: Node
 	this.toNode = to; //type: Node
 	//what should the initial weights be?
 	//this.weight = Math.random() * this.inputs * Math.sqrt(2/this.inputs);
-	this.weight = Math.random() * 2 - 1; //type: Number
+	this.weight = weight; //type: Number
 	this.enabled = true;
 
 	this.mutateWeight = function() {
