@@ -195,8 +195,8 @@ this.addNode = function(){
 			node.layer++;
 	});
 
-	var newConnection1 = new Connection(pickedConnection.fromNode, newNode,pickedConnection.weight);
-	var newConnection2 = new Connection(newNode, pickedConnection.toNode,1);
+	var newConnection1 = new Connection(pickedConnection.fromNode, newNode,1);
+	var newConnection2 = new Connection(newNode, pickedConnection.toNode,pickedConnection.weight);
 
 	this.layers++;
 	this.connections.push(newConnection1); //Add connection
