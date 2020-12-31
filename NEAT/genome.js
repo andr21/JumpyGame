@@ -173,7 +173,7 @@ this.mutate = function(){
 	}
 
 //Add a node
-	if(Math.random() < 0.01) { //1%
+	if(Math.random() < 0.03) { //3%
 		console.log('Add a node');
 		this.addNode();
 	}
@@ -308,6 +308,24 @@ this.addConnection = function(){
 		this.nodes.sort((a, b) => {
 			return a.layer - b.layer;
 		});
+	}
+
+	this.averageWeightDifference = function(partner){ //gets average weight difference of matching connections
+
+		var absWeightDiff = 0;
+		var numMatchingConnections = 0;
+		for(let i = 0; i < this.connections.length; i++){
+			console.log('yo');
+			var lookup = this.commonConnection(this.connections[i].getInnovationNumber(), partner.connections);
+			if(lookup != -1){
+				numMatchingConnections ++;
+				absWeightDiff += Math.abs(this.connections[i].weight - partner.connections[lookup].weight)
+			}
+
+		}
+
+		return absWeightDiff/numMatchingConnections;
+
 	}
 
 }

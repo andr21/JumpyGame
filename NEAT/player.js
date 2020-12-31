@@ -69,4 +69,13 @@ function Player(){
 
 
 
+	this.compatabilityDistance = function(otherPlayer, EDcoefficient, Wcoefficient){
+		//using neats formula but with excess and sijoint together
+		var weightDiff = this.brain.averageWeightDifference(otherPlayer.brain);
+		return Math.abs(this.brain.length - otherPlayer.brain.length)*EDcoefficient + weightDiff*Wcoefficient;
+
+	}
+
+
+
 }

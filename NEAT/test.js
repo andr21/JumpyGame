@@ -13,7 +13,7 @@
 
 
 
-var banana = new Genome(3,2);
+var banana = new Genome(2,1);
 
 function boob(){
 	banana.mutate();

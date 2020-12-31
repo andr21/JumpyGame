@@ -5,6 +5,17 @@ function Population(size) {
 	this.generation = 0;
 	this.matingPool = [];
 
+
+//split them up into species
+	//this.config{
+	//	edcoef= 1
+	//	wcoef =0.4
+	//	compdiff =3
+	//	max fitness of specieces not improve in 15 generations then cant reproduce
+	//	champion of each species with more than 5 players getscopied accross with no changes
+	//	new pop: 25% just mutation
+	//}
+
 	for(var i = 0; i < size; i++){
 		this.population.push(new Player());
 		//TODO: are these two next bits needed??
@@ -38,13 +49,13 @@ function Population(size) {
 
 	}
 
+	                                          
+	this.naturalSelection = function(){
 
 
 
 
-
-
-
+	}
 
 
 
