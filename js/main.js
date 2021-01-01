@@ -23,7 +23,7 @@ var drawRectLines = false;
 
 var game;
 var pause = true;
-pauseplay();
+//pauseplay();
 
 function pauseplay(){
 

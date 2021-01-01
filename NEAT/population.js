@@ -66,10 +66,34 @@ function Population(size) {
 
 	                                          
 	this.naturalSelection = function(){
+
 		this.splitIntoSpecies();
 		this.calculateFitness();
 
+		console.log(this.getAverageScore());
 
+
+		//TODO: temporary natural selection
+		this.population.sort((a, b) => {
+			return a.fitness - b.fitness;
+		});
+		var deletey = this.population.length/2;
+		this.population.splice(0,this.population.length/2);
+		
+		for(var j = 0; j < deletey; j++){
+			this.population.push(this.population[j+2].crossover(this.population[j+3]));
+		}
+		for(var i = 0; i < this.population.length; i++){
+			this.population[i].brain.mutate();
+			this.population[i].dead = false;
+			this.population[i].score = 0;
+			this.population[i].lives = 5;
+		}
+
+		//end of TODO
+
+		this.generation++;
+		console.log('Generation: ' + this.generation);
 
 
 	}
@@ -150,6 +174,16 @@ function Population(size) {
 		}
 		
 
+	}
+
+
+	this.getAverageScore = function(){
+		let avSum = 0;
+		this.population.forEach((player) => { 
+			avSum += player.score;
+		});
+
+		return avSum / this.population.length;
 	}
 
 

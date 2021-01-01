@@ -11,9 +11,9 @@
 //hmmmm i dont know if this innovation number method is correct .. because what if you get a "node 5" added to a completely differnt place? .. maybe it's okay
 
 
+//lets get a graph in showing average and max score
 
-
-var banana = new Population(10);
+var banana = new Population(100);
 
 function boob(){
 	console.log('boob');
@@ -23,13 +23,37 @@ function boob(){
 	banana.population[0].brain.draw();
 }
 
-function boob1(){
-	console.log('boob');
-	for(var i = 0; i < 50; i++) {
-		banana.population[1].brain.mutate();
+function drawXOR(){
+		if(!banana.allDone())
+		{
+			console.log('update alive');
+			banana.updateAlive();
+		} else {
+			console.log('all dead, natural selection time');
+			pauseplayXOR();
+			
+			banana.naturalSelection();
+			
+		}
+
 	}
-	banana.population[1].brain.draw();
+
+//game = setInterval(drawXOR,200);
+
+var pauseXOR = true;
+var gameXOR;
+pauseplayXOR();
+
+function pauseplayXOR(){
+
+  if(pauseXOR == true){
+    gameXOR = setInterval(drawXOR,100);
+    pauseXOR = false;
+    console.log('Game unpaused');
+  }else{
+    clearInterval(gameXOR);
+    pauseXOR = true;
+    console.log('Game paused');
+  }
+
 }
-
-
-
