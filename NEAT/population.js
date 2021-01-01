@@ -5,9 +5,18 @@ function Population(size) {
 	this.generation = 0;
 	//this.matingPool = [];
 
+	this.config = {
+		inputs:2,
+		outputs:1,
+		compDiffThreshold:3,
+		EDcoefficient:1,
+		Wcoefficient:0.4
+	};
+
+
 	this.activeSpecies = [];
 	//{id:1, example:"Doe", age:50, numberActive:"blue"}
-	//id, genome, how many generations its been going for, how many of them are in the population
+	//+ max fitness? + age since max fitness increased??
 
 
 //split them up into species
@@ -23,7 +32,7 @@ function Population(size) {
 
 
 	for(var i = 0; i < size; i++){
-		this.population.push(new Player());
+		this.population.push(new Player(this.config.inputs,this.config.outputs));
 		//TODO: are these two next bits needed??
 		this.population[i].brain.generateNetwork();
 		this.population[i].brain.mutate();
@@ -57,6 +66,8 @@ function Population(size) {
 
 	                                          
 	this.naturalSelection = function(){
+		this.splitIntoSpecies();
+		this.calculateFitness();
 
 
 
@@ -66,16 +77,21 @@ function Population(size) {
 
 
 	this.splitIntoSpecies = function(){
+		var nextSpeciesID = 0;
 
-		for(var j = 0; j < this.activeSpecies.length; j++){ //reset number of active species
-			this.activeSpecies[j].numberActive = 0;
+		for(var j = 0; j < this.activeSpecies.length; j++){ 
+			this.activeSpecies[j].numberActive = 0; //reset number of active species
+			this.activeSpecies[j].age ++; //+1 age
+			nextSpeciesID = Math.max(nextSpeciesID,this.activeSpecies[j].id);
 		}
+		nextSpeciesID ++;
 
 		for(var i = 0; i < this.population.length; i++){
 			var newSpecies = true;
 			for(var j = 0; j < this.activeSpecies.length; j++){
-				var compdiff = this.population[i].compatabilityDistance(this.activeSpecies[j].example,EDcoefficient,Wcoefficient);
-				if(compdiff <= compDiffThreshold){ //in the same species
+				var compdiff = this.population[i].compatabilityDistance(this.activeSpecies[j].example,this.config.EDcoefficient,this.config.Wcoefficient);
+				//console.log('compdiff: ' + compdiff);
+				if(compdiff <= this.config.compDiffThreshold){ //in the same species
 					this.population[i].speciesId = this.activeSpecies[j].id;
 					this.activeSpecies[j].numberActive++;
 					newSpecies = false;
@@ -83,14 +99,15 @@ function Population(size) {
 				}
 			}
 			if(newSpecies == true){ //add a new species to active species
-				//TODO: a way to come up with unique id's
-				this.activeSpecies.push({id:1, example:this.population[i], age:0, numberActive:1});
+				this.activeSpecies.push({id:nextSpeciesID, example:this.population[i], age:0, numberActive:1});
+				this.population[i].speciesId = nextSpeciesID;
+				nextSpeciesID++;
 			}
 		}
 
 
-		for(var j = 0; j < this.activeSpecies.length; j++){ //+1 age and delete empty species
-			this.activeSpecies[j].age ++;
+		for(var j = 0; j < this.activeSpecies.length; j++){ //delete empty species
+			
 
 			if(this.activeSpecies[j].numberActive == 0){
 				this.activeSpecies[j].splice(j,0);
@@ -98,7 +115,40 @@ function Population(size) {
 			}
 		}
 
+	}
 
+
+	this.calculateFitness = function(){
+		var currentMax = 0;
+		this.population.forEach((player) => { 
+			player.calculateFitness();
+
+			//TODO: this is where the bestome gets drawn, do I want this?
+			//if(player.fitness > this.bestFitness){
+			//	this.bestFitness = player.fitness;
+			//	this.bestPlayer = player.clone();
+			//	this.bestPlayer.brain.id = "BestGenome";
+			//	this.bestPlayer.brain.draw();
+			//}
+
+			if(player.fitness > currentMax)
+				currentMax = player.fitness;
+		});
+
+		//Normalize
+		this.population.forEach((player) => { 
+			player.fitness /= currentMax;
+		});
+
+		//fitness sharing
+		for(var i = 0; i < this.population.length; i++){
+			for(var j = 0; j < this.activeSpecies.length; j++){
+				if(this.population[i].speciesId == this.activeSpecies[j].id){
+					this.population[i].fitness /= this.activeSpecies[j].numberActive;
+				}
+			}
+		}
+		
 
 	}
 

@@ -1,11 +1,14 @@
 
 
-function Player(){
+function Player(inp,out){
 
-	this.brain = new Genome(2,1);
+	this.brain = new Genome(inp,out);
 
 	this.dead = false;
 	this.fitness;
+
+	this.score = 0;
+	this.fitness = 0;
 
 	this.vision = []; //current input values
 	this.decisions = []; //current output values
@@ -29,7 +32,7 @@ function Player(){
 
 
 	//Game stuff
-
+/* BALL GAME
 	this.ball = new Ball();
 	this.val;
 
@@ -53,12 +56,70 @@ function Player(){
 			this.ball.jump();
 		}
 		this.ball.update();
+		this.score = this.ball.score;
 		this.dead = this.ball.dead;
 
 	}
 
 	this.show = function(){
 		this.ball.draw();
+	}
+
+	*/
+
+
+	//XOR
+	this.val;
+	this.correctVal;
+	this.lives = 5;
+
+	function XOR(in1,in2){
+		if( ( in1 && !in2 ) || ( !in1 && in2 ) ) {
+			return 1;
+		}
+		return 0
+	}
+
+	this.look = function(){
+		var input1 = Math.random()>0.5 ? 1 : 0;
+		var input2 = Math.random()>0.5 ? 1 : 0;
+		this.correctVal = XOR(input1,input2);
+		this.vision = [input1 , input2];
+		//console.log('input1: ' + input1);
+		//console.log('input2: ' + input2);
+		//console.log('correctVal: ' + this.correctVal);
+
+
+	}
+
+	this.think = function(){
+		this.decisions = this.brain.feedForward(this.vision);
+	}
+
+	this.move = function(){
+		this.val = this.decisions[0] >= 0 ? 1 : 0;
+		//console.log('raw decision: ' + this.decisions[0]);
+		//console.log('decision/val: ' + this.val);
+	}
+
+	this.update = function(){
+		//console.log(this.val);
+		if(this.val == this.correctVal){
+			this.score++;
+			console.log('woo you got it right');
+		} else {
+			this.lives--;
+			console.log('wrong :(');
+		}
+
+		if(this.lives == 0){
+			this.dead = true;
+		}
+
+	}
+
+	this.show = function(){
+		
 	}
 
 
@@ -74,7 +135,13 @@ function Player(){
 	this.compatabilityDistance = function(otherPlayer, EDcoefficient, Wcoefficient){
 		//using neats formula but with excess and sijoint together
 		var weightDiff = this.brain.averageWeightDifference(otherPlayer.brain);
-		return Math.abs(this.brain.length - otherPlayer.brain.length)*EDcoefficient + weightDiff*Wcoefficient;
+		return Math.abs(this.brain.connections.length - otherPlayer.brain.connections.length)*EDcoefficient + weightDiff*Wcoefficient;
+
+	}
+
+
+	this.calculateFitness = function(){
+		this.fitness = this.score;
 
 	}
 

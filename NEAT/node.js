@@ -36,7 +36,7 @@ function Node(num, lay, isOutput = false){
 	}
 
 	this.mutateActivation = function() { //Randomly choose a new activationFunction
-		console.log('mutate activation called from somewhere');
+		//console.log('mutate activation called from somewhere');
 		this.activationFunction = Math.floor(Math.random() * 5); //Number between 0 and 4
 	}
 

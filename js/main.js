@@ -13,8 +13,8 @@ c.height = 450;
 
 var ground = 40;
 
-//var ball = new Ball;
-var population = new Population(1);
+var ball = new Ball;
+//var population = new Population(1);
 var wallmanager = new WallManager;
 //var topwall	= new TopWall;
 
@@ -57,21 +57,22 @@ function draw(){
 	c.width = c.width;
   
 
-  //ball.draw();
-  //ball.update();
+  ball.draw();
+  ball.update();
 
-  population.updateAlive();
+  //population.updateAlive();
 
   
   wallmanager.draw();
   wallmanager.update();
 
   //TODO: needs sorting
-  population.population[0].ball.checkCollision(wallmanager.walls);
+  ball.checkCollision(wallmanager.walls);
+  //population.population[0].ball.checkCollision(wallmanager.walls);
 
   //TODO: needs sorting
-  scorecounter.innerHTML = population.population[0].ball.score;
-
+  //scorecounter.innerHTML = population.population[0].ball.score;
+  scorecounter.innerHTML = ball.score;
     }
 
 
