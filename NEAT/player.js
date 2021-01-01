@@ -10,6 +10,8 @@ function Player(){
 	this.vision = []; //current input values
 	this.decisions = []; //current output values
 
+	this.speciesId;
+
 
 	this.crossover = function(partner){
 		var child = new Player();
