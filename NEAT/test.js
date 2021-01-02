@@ -30,7 +30,7 @@ function drawXOR(){
 			banana.updateAlive();
 		} else {
 			console.log('all dead, natural selection time');
-			pauseplayXOR();
+			//pauseplayXOR();
 			
 			banana.naturalSelection();
 			
@@ -47,7 +47,7 @@ pauseplayXOR();
 function pauseplayXOR(){
 
   if(pauseXOR == true){
-    gameXOR = setInterval(drawXOR,100);
+    gameXOR = setInterval(drawXOR,50);
     pauseXOR = false;
     console.log('Game unpaused');
   }else{

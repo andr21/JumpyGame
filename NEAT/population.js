@@ -70,7 +70,8 @@ function Population(size) {
 		this.splitIntoSpecies();
 		this.calculateFitness();
 
-		console.log(this.getAverageScore());
+		console.log('Average score: ' + this.getAverageScore());
+		this.stats();
 
 
 		//TODO: temporary natural selection
@@ -87,10 +88,14 @@ function Population(size) {
 			this.population[i].brain.mutate();
 			this.population[i].dead = false;
 			this.population[i].score = 0;
-			this.population[i].lives = 5;
+			this.population[i].turns = 20;
 		}
 
 		//end of TODO
+
+
+		//	champion of each species with more than 5 players getscopied accross with no changes
+
 
 		this.generation++;
 		console.log('Generation: ' + this.generation);
@@ -132,9 +137,9 @@ function Population(size) {
 
 		for(var j = 0; j < this.activeSpecies.length; j++){ //delete empty species
 			
-
 			if(this.activeSpecies[j].numberActive == 0){
-				this.activeSpecies[j].splice(j,0);
+				console.log(j);
+				this.activeSpecies.splice(j,1);
 				j--;
 			}
 		}
@@ -184,6 +189,25 @@ function Population(size) {
 		});
 
 		return avSum / this.population.length;
+	}
+
+	this.stats = function(){
+	
+		let maxScore = 0;
+		let minScore = 100000;
+		let totalNodes = 0;
+		this.population.forEach((player) => { 
+			maxScore = Math.max(maxScore,player.score);
+			minScore = Math.min(minScore,player.score);
+			totalNodes += player.brain.nodes.length;
+		});
+
+		var averageNodes = totalNodes/this.population.length;
+
+		console.log('Average number of nodes: ' + averageNodes);
+		console.log('Max Score: ' + maxScore);
+		console.log('Min Score: ' + minScore);
+
 	}
 
 

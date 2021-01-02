@@ -69,9 +69,9 @@ function Player(inp,out){
 
 
 	//XOR
-	this.val;
+	this.val = 0;
 	this.correctVal;
-	this.lives = 5;
+	this.turns = 20;
 
 	function XOR(in1,in2){
 		if( ( in1 && !in2 ) || ( !in1 && in2 ) ) {
@@ -97,29 +97,44 @@ function Player(inp,out){
 	}
 
 	this.move = function(){
-		this.val = this.decisions[0] >= 0 ? 1 : 0;
+		this.val += Math.abs(this.decisions[0] - this.correctVal)
 		//console.log('raw decision: ' + this.decisions[0]);
-		//console.log('decision/val: ' + this.val);
+		//console.log('val: ' + this.val);
 	}
 
 	this.update = function(){
-		//console.log(this.val);
-		if(this.val == this.correctVal){
-			this.score++;
-			console.log('woo you got it right');
-		} else {
-			this.lives--;
-			console.log('wrong :(');
-		}
 
-		if(this.lives == 0){
+		this.turns--;
+
+		//console.log(this.val);
+		//if(this.val == this.correctVal){
+			this.score = this.val;
+			//console.log('woo you got it right');
+		//} else {
+			
+			//console.log('wrong :(');
+		//}
+
+		if(this.turns == 0){
 			this.dead = true;
 		}
 
 	}
 
 	this.show = function(){
-		
+
+		if(
+			(this.brain.feedForward(0,0) > 0.5 ? 1 : 0) == 0 &&
+			(this.brain.feedForward(1,0) > 0.5 ? 1 : 0) == 1 &&
+			(this.brain.feedForward(0,1) > 0.5 ? 1 : 0) == 1 &&
+			(this.brain.feedForward(1,1) > 0.5 ? 1 : 0) == 0 
+			){
+
+				for(var i = 0; i < 10; i++){
+					console.log('DONE!!');
+				}
+		}
+
 	}
 
 
@@ -141,7 +156,7 @@ function Player(inp,out){
 
 
 	this.calculateFitness = function(){
-		this.fitness = this.score;
+		this.fitness = (20 - this.score)^2;
 
 	}
 
