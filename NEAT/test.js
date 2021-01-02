@@ -13,6 +13,9 @@
 
 //lets get a graph in showing average and max score
 
+//debug genome line 139
+
+
 
 //sort out calculate fitness!!
 
@@ -50,7 +53,7 @@ pauseplayXOR();
 function pauseplayXOR(){
 
   if(pauseXOR == true){
-    gameXOR = setInterval(drawXOR,50);
+    gameXOR = setInterval(drawXOR,2000);
     pauseXOR = false;
     console.log('Game unpaused');
   }else{

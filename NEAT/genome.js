@@ -1,4 +1,9 @@
 
+var calls = 0;
+function iSuspectToBeLoopingInfititely() {
+  calls += 1;
+  if (calls > 100) { debugger; }
+}
 
 function Genome(inp, out, offSpring = false){
 
@@ -130,6 +135,8 @@ function Genome(inp, out, offSpring = false){
 		}
 
 		offSpring.layers = this.layers;
+
+		//DEBUG add a function here to check the validity of the offspring's node layers. There shouldn't be any gaps!!
 		return offSpring;
 	}
 
@@ -143,7 +150,7 @@ this.mutate = function(){
 
 //Mutate connection weights
 	if(Math.random() < 0.8) { //80%
-		//console.log('Mutate connection weights');
+		console.log('Mutate connection weights');
 		for(var i = 0; i < this.connections.length; i++) {
 			this.connections[i].mutateWeight();
 		}
@@ -152,7 +159,7 @@ this.mutate = function(){
 
 //Mutate node bias'
 	if(Math.random() < 0.5) { //50%
-		//console.log('Mutate node bias');
+		console.log('Mutate node bias');
 		for(var i = 0; i < this.nodes.length; i++) {
 			this.nodes[i].mutateBias();
 		}
@@ -161,22 +168,24 @@ this.mutate = function(){
 
 //Mutate a node activation function
 	if(Math.random() < 0.1) { //10%
-		//console.log('Changing a nodes activation function');
+		console.log('Changing a nodes activation function');
 		var i = Math.floor(Math.random() * this.nodes.length);
 		this.nodes[i].mutateActivation();
 	}
 
 //Add a connection
 	if(Math.random() < 0.05) { //5%
-		//console.log('Add a connection');
+		console.log('Add a connection');
 		this.addConnection();
 	}
 
 //Add a node
 	if(Math.random() < 0.03) { //3%
-		//console.log('Add a node');
+		console.log('Add a node');
 		this.addNode();
 	}
+
+	console.log('Done mutating.');
 
 }
 
@@ -208,6 +217,7 @@ this.addNode = function(){
 
 
 this.addConnection = function(){
+
 	if(this.fullyConnected()){
 		//console.log('unable to add connection, fully connected')
 		return; //Cannot adda connection as fully connected
@@ -221,6 +231,13 @@ this.addConnection = function(){
 	while (this.nodes[node1].layer == this.nodes[node2].layer || this.nodesConnected(this.nodes[node1],this.nodes[node2])){
 		node1 = Math.floor(Math.random() * this.nodes.length);
 		node2 = Math.floor(Math.random() * this.nodes.length);
+		console.log('bug!');
+		console.log(this.nodes.length);
+		console.log(this.connections);
+		console.log(this.nodes);
+
+		iSuspectToBeLoopingInfititely();
+
 	}
 
 	//switch nodes based on their layer
@@ -244,6 +261,14 @@ this.addConnection = function(){
 
 //Utilities
 
+	this.clone = function() { //Returns a copy of this genome
+		let clone = new Genome(this.inputs, this.outputs, this.id);
+		clone.nodes = this.nodes.slice(0, this.nodes.length);
+		clone.connections = this.connections.slice(0, this.connections.length);
+
+		return clone;
+	}
+
 	this.getNode = function(x){ //returns the index of a node with that Number
 		for(var i = 0; i < this.nodes.length; i++) {
 			if(this.nodes[i].number === x){
@@ -259,6 +284,11 @@ this.addConnection = function(){
 
 		//Calculate all possible connections
 		//(this works because all hidden nodes are on their own layer, so this is simply inputs and outputs cannot be connected to themselves)
+		
+		//for(var i = 0; i < this.layers - 1; i++) {
+		//	nodesPerLayer[i] = 0;
+		//}
+
 		this.nodes.forEach((node)=>{
 			if(nodesPerLayer[node.layer] != undefined){
 				nodesPerLayer[node.layer]++;
@@ -266,6 +296,23 @@ this.addConnection = function(){
 				nodesPerLayer[node.layer] =1;
 			}
 		});
+		
+
+
+		//this.nodes.forEach((node)=>{
+		//		nodesPerLayer[node.layer]++;
+		//});
+
+
+		for(var i = 0; i < nodesPerLayer.length - 1; i++) {
+			if(nodesPerLayer[i] == undefined){
+				nodesPerLayer[i] = 0;
+			}
+		}
+		
+		
+
+
 
 		for(var i = 0; i < this.layers - 1; i++) {
 			for(var j = i + 1; j < this.layers; j++) {
@@ -274,7 +321,14 @@ this.addConnection = function(){
 		}
 
 		//output
+		console.log('kiwi');
+		console.log(nodesPerLayer);
+		console.log(maxConnections);
+		console.log(this.layers);
+		console.log(this);
+		
 		return maxConnections == this.connections.length;
+
 
 	}
 

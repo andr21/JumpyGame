@@ -15,6 +15,12 @@ function Player(inp,out){
 
 	this.speciesId;
 
+	this.clone = function() { //Returns a copy of this player
+		let clone = new Player();
+		clone.brain = this.brain.clone();
+		return clone;
+	}
+
 
 	this.crossover = function(partner){
 		var child = new Player();
@@ -81,10 +87,10 @@ function Player(inp,out){
 	}
 
 	this.look = function(){
-		var input1 = Math.random()>0.5 ? 1 : 0;
-		var input2 = Math.random()>0.5 ? 1 : 0;
-		this.correctVal = XOR(input1,input2);
-		this.vision = [input1 , input2];
+		//var input1 = Math.random()>0.5 ? 1 : 0;
+		//var input2 = Math.random()>0.5 ? 1 : 0;
+		//this.correctVal = XOR(input1,input2);
+		//this.vision = [input1 , input2];
 		//console.log('input1: ' + input1);
 		//console.log('input2: ' + input2);
 		//console.log('correctVal: ' + this.correctVal);
@@ -93,31 +99,28 @@ function Player(inp,out){
 	}
 
 	this.think = function(){
-		this.decisions = this.brain.feedForward(this.vision);
+		//this.decisions = this.brain.feedForward(this.vision);
 	}
 
 	this.move = function(){
-		this.val += Math.abs(this.decisions[0] - this.correctVal)
+		//this.val += Math.abs(this.decisions[0] - this.correctVal)
 		//console.log('raw decision: ' + this.decisions[0]);
 		//console.log('val: ' + this.val);
 	}
 
 	this.update = function(){
 
-		this.turns--;
+	
+		this.score =
+		4 -
+		Math.abs(this.brain.feedForward([0,0]) - 0) -
+		Math.abs(this.brain.feedForward([1,0]) - 1) -
+		Math.abs(this.brain.feedForward([0,1]) - 1) -
+		Math.abs(this.brain.feedForward([1,1]) - 0)
+		;
 
-		//console.log(this.val);
-		//if(this.val == this.correctVal){
-			this.score = this.val;
-			//console.log('woo you got it right');
-		//} else {
-			
-			//console.log('wrong :(');
-		//}
-
-		if(this.turns == 0){
 			this.dead = true;
-		}
+		
 
 	}
 
@@ -132,6 +135,7 @@ function Player(inp,out){
 
 				for(var i = 0; i < 10; i++){
 					console.log('DONE!!');
+					pauseplayXOR();
 				}
 		}
 
@@ -140,10 +144,6 @@ function Player(inp,out){
 
 
 
-	this.calculateFitness = function(){
-		this.fitness = this.ball.score;
-
-	}
 
 
 
@@ -156,14 +156,9 @@ function Player(inp,out){
 
 
 	this.calculateFitness = function(){
-		//this.fitness = (20 - this.score)^2;
-
-		this.fitness = (
-		Math.abs(this.brain.feedForward([0,0]) - 0) +
-		Math.abs(this.brain.feedForward([1,0]) - 1) +
-		Math.abs(this.brain.feedForward([0,1]) - 1) +
-		Math.abs(this.brain.feedForward([1,1]) - 0) - 4
-		)^2;
+		//console.log('Score: ' + this.score);
+		this.fitness = Math.pow(this.score,2);
+		//console.log('Fitness: ' + this.fitness);
 	}
 
 
