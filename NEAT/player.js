@@ -124,10 +124,10 @@ function Player(inp,out){
 	this.show = function(){
 
 		if(
-			(this.brain.feedForward(0,0) > 0.5 ? 1 : 0) == 0 &&
-			(this.brain.feedForward(1,0) > 0.5 ? 1 : 0) == 1 &&
-			(this.brain.feedForward(0,1) > 0.5 ? 1 : 0) == 1 &&
-			(this.brain.feedForward(1,1) > 0.5 ? 1 : 0) == 0 
+			(this.brain.feedForward([0,0]) > 0.5 ? 1 : 0) == 0 &&
+			(this.brain.feedForward([1,0]) > 0.5 ? 1 : 0) == 1 &&
+			(this.brain.feedForward([0,1]) > 0.5 ? 1 : 0) == 1 &&
+			(this.brain.feedForward([1,1]) > 0.5 ? 1 : 0) == 0 
 			){
 
 				for(var i = 0; i < 10; i++){
@@ -156,8 +156,14 @@ function Player(inp,out){
 
 
 	this.calculateFitness = function(){
-		this.fitness = (20 - this.score)^2;
+		//this.fitness = (20 - this.score)^2;
 
+		this.fitness = (
+		Math.abs(this.brain.feedForward([0,0]) - 0) +
+		Math.abs(this.brain.feedForward([1,0]) - 1) +
+		Math.abs(this.brain.feedForward([0,1]) - 1) +
+		Math.abs(this.brain.feedForward([1,1]) - 0) - 4
+		)^2;
 	}
 
 

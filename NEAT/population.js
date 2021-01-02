@@ -43,6 +43,7 @@ function Population(size) {
 	this.updateAlive = function(){
 		for(var i = 0; i < this.population.length; i++){
 			if(!this.population[i].dead){
+				//console.log(i);
 				  this.population[i].look();
 				  this.population[i].think();
 				  this.population[i].move();
@@ -84,6 +85,10 @@ function Population(size) {
 		for(var j = 0; j < deletey; j++){
 			this.population.push(this.population[j+2].crossover(this.population[j+3]));
 		}
+
+		//add some more for fun
+		this.population = this.population.concat(this.getChampions());
+
 		for(var i = 0; i < this.population.length; i++){
 			this.population[i].brain.mutate();
 			this.population[i].dead = false;
@@ -91,10 +96,14 @@ function Population(size) {
 			this.population[i].turns = 20;
 		}
 
+
+
 		//end of TODO
 
 
 		//	champion of each species with more than 5 players getscopied accross with no changes
+		var children = [];
+
 
 
 		this.generation++;
@@ -103,7 +112,32 @@ function Population(size) {
 
 	}
 
+	this.getChampions = function(){
+		var champions = [];
+		var newChampNeeded = true;
 
+		for(var i = 0; i < this.population.length; i++){
+			newChampNeeded = true;
+			for(var j = 0; j < champions.length; j++){
+				if (this.population[i].speciesId == champions[j].speciesId) {
+					if(this.population[i].fitness > champions[j].fitness){
+						//replace champion
+						champions.splice(j,1);
+						j--;
+						champions.push(this.population[i])
+
+					} 
+					newChampNeeded = false;
+				}
+			}
+
+			if(newChampNeeded == true){
+				champions.push(this.population[i]);
+			}
+
+		}
+		return champions;
+	}
 
 	this.splitIntoSpecies = function(){
 		var nextSpeciesID = 0;

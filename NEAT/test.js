@@ -13,6 +13,9 @@
 
 //lets get a graph in showing average and max score
 
+
+//sort out calculate fitness!!
+
 var banana = new Population(100);
 
 function boob(){
