@@ -138,14 +138,30 @@ function Genome(inp, out, offSpring = false){
 
 		//DEBUG add a function here to check the validity of the offspring's node layers. There shouldn't be any gaps!!
 		var hiddenNodes = 0;
+		var maxLayerness = 0;
 		for(var i = 0; i < offSpring.nodes.length; i++) {
 			if (offSpring.nodes[i].layer != 0 && offSpring.nodes[i].output ==false) {
 				hiddenNodes++;
 			}
+			maxLayerness = Math.max(maxLayerness,offSpring.nodes[i].layer);
 		}
 
 		if(offSpring.layers != hiddenNodes + 2){
 			console.log('Error: something has gone wrong with crossover');
+			console.log('this: ');
+			console.log(this);
+			console.log('');
+			console.log('partner: ');
+			console.log(partner);
+			console.log('');
+			console.log('offSpring: ');
+			console.log(offSpring);
+			debugger;
+
+		}
+
+		if(offSpring.layers - 1 != maxLayerness){
+			console.log('Error: something has gone wrong with crossover.. layer gap');
 			console.log('this: ');
 			console.log(this);
 			console.log('');
@@ -165,6 +181,17 @@ function Genome(inp, out, offSpring = false){
 	}
 
 
+	this.debugger = function(){
+		var maxLayerness = 0;
+		for(var i = 0; i < this.nodes.length; i++) {
+			maxLayerness = Math.max(maxLayerness,this.nodes[i].layer);
+		}
+		if(this.layers - 1 != maxLayerness){
+			return true;
+		}
+		return false;
+
+	}
 
 
 //Mutations
@@ -286,7 +313,7 @@ this.addConnection = function(){
 //Utilities
 
 	this.clone = function() { //Returns a copy of this genome
-		let clone = new Genome(this.inputs, this.outputs, this.id);
+		let clone = new Genome(this.inputs, this.outputs, true);
 		clone.nodes = this.nodes.slice(0, this.nodes.length);
 		clone.connections = this.connections.slice(0, this.connections.length);
 		clone.layers = this.layers;

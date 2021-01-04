@@ -132,17 +132,26 @@ function Population(size) {
 
 
 		for(var i = 0; i < champions.length; i++){
-			children.push(champions[i].clone());
+			children.push(champions[i]);
+
+			if(champions[i].brain.debugger() == true){
+				debugger;
+			}
+
 		}
 		//console.log('champions added: ' + champions.length);
 
 	//25%: take the top 25% and mutate
 
 		for(var i = 0; i < Math.floor(this.population.length - children.length) * 0.25; i++){
-			var playerToAdd = this.population[i].clone();
+			var playerToAdd = this.population[i];
 			playerToAdd.brain.mutate();
 			children.push(playerToAdd);
 			//console.log('adding child: a');
+
+			if(playerToAdd.brain.debugger() == true){
+				debugger;
+			}
 		}
 
 
@@ -160,7 +169,7 @@ function Population(size) {
 			let parent1 = this.selectPlayer();
 			let parent2 = this.selectPlayer();
 			var toBeAdded = parent1.crossover(parent2);
-				children.push(toBeAdded.clone());
+				children.push(toBeAdded);
 				//console.log('numToAdd: ' + numToAdd);
 				//console.log('adding child: b');
 			

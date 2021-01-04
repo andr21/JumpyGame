@@ -30,6 +30,17 @@ function boob(){
 }
 
 function drawXOR(){
+
+	for(var i = 0; i < banana.population.length; i++){
+		if(banana.population[i].brain.debugger() == true){
+				console.log(banana.population[i]);
+				console.log(i);
+					debugger;
+				}
+	}
+
+
+
 		if(!banana.allDone())
 		{
 			console.log('update alive');
