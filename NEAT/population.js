@@ -139,7 +139,7 @@ function Population(size) {
 
 	//50%: take the top 50% and mutate
 
-		for(var i = 0; i < Math.floor(this.population.length - children.length) * 0.5; i++){
+		for(var i = 0; i < Math.floor((this.population.length - children.length) * 0.5); i++){
 			var playerToAdd = this.population[i];
 			playerToAdd.brain.mutate();
 			children.push(playerToAdd);
@@ -160,6 +160,7 @@ function Population(size) {
 		var numToAdd = children.length;
 		for(let i = 0; i < this.population.length - numToAdd; i++){
 			let parent1 = this.selectPlayer();
+			//TODO do we want this to always be differnt parents currently they could be the same
 			let parent2 = this.selectPlayer();
 			var toBeAdded = parent1.crossover(parent2);
 				children.push(toBeAdded);
@@ -298,6 +299,12 @@ function Population(size) {
 		//fitness sharing
 		for(var i = 0; i < this.population.length; i++){
 			for(var j = 0; j < this.activeSpecies.length; j++){
+				
+				if(this.population[i].speciesId = undefined){
+					console.log('missing species id');
+					debugger;
+				}
+
 				if(this.population[i].speciesId == this.activeSpecies[j].id){
 					//console.log('fitness before :' + this.population[i].fitness);
 					this.population[i].fitness /= this.activeSpecies[j].numberActive;

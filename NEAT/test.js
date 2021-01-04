@@ -14,12 +14,13 @@
 //lets get a graph in showing average and max score
 
 //how can max score be going down??????
+//after second loop ordering of fitness/scores is out.. something is wrong
 
 
 
 //sort out calculate fitness!!
 
-var banana = new Population(150);
+var banana = new Population(10);
 
 function boob(){
 	console.log('boob');
@@ -55,7 +56,7 @@ pauseplayXOR();
 function pauseplayXOR(){
 
   if(pauseXOR == true){
-    gameXOR = setInterval(drawXOR,100);
+    gameXOR = setInterval(drawXOR,2000);
     pauseXOR = false;
     console.log('Game unpaused');
   }else{
