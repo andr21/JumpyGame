@@ -137,6 +137,30 @@ function Genome(inp, out, offSpring = false){
 		offSpring.layers = this.layers;
 
 		//DEBUG add a function here to check the validity of the offspring's node layers. There shouldn't be any gaps!!
+		var hiddenNodes = 0;
+		for(var i = 0; i < offSpring.nodes.length; i++) {
+			if (offSpring.nodes[i].layer != 0 && offSpring.nodes[i].output ==false) {
+				hiddenNodes++;
+			}
+		}
+
+		if(offSpring.layers != hiddenNodes + 2){
+			console.log('Error: something has gone wrong with crossover');
+			console.log('this: ');
+			console.log(this);
+			console.log('');
+			console.log('partner: ');
+			console.log(partner);
+			console.log('');
+			console.log('offSpring: ');
+			console.log(offSpring);
+			debugger;
+
+		}
+
+
+
+
 		return offSpring;
 	}
 
@@ -265,6 +289,8 @@ this.addConnection = function(){
 		let clone = new Genome(this.inputs, this.outputs, this.id);
 		clone.nodes = this.nodes.slice(0, this.nodes.length);
 		clone.connections = this.connections.slice(0, this.connections.length);
+		clone.layers = this.layers;
+		clone.nextNode = this.nextNode;
 
 		return clone;
 	}
