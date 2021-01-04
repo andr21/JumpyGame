@@ -33,7 +33,7 @@ function Node(num, lay, isOutput = false){
 		else //90% chance to amend weight
 
 			//TODO this needs thinking about/investigating
-			this.bias += rand_bm()/50;
+			this.bias += rand_bm()/20;
 	}
 
 	this.mutateActivation = function() { //Randomly choose a new activationFunction

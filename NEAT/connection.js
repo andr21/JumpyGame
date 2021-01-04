@@ -13,7 +13,7 @@ function Connection(from, to, weight = Math.random() * 2 - 1){
 		} else { //90% chance to amend weight
 
 			//this needs thinking about/investigating
-			this.weight += rand_bm()/50;
+			this.weight += rand_bm()/20;
 		}
 
 	}

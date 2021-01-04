@@ -1,9 +1,4 @@
 
-var calls = 0;
-function iSuspectToBeLoopingInfititely() {
-  calls += 1;
-  if (calls > 100) { debugger; }
-}
 
 function Genome(inp, out, offSpring = false){
 
@@ -136,61 +131,7 @@ function Genome(inp, out, offSpring = false){
 
 		offSpring.layers = this.layers;
 
-		//DEBUG add a function here to check the validity of the offspring's node layers. There shouldn't be any gaps!!
-		var hiddenNodes = 0;
-		var maxLayerness = 0;
-		for(var i = 0; i < offSpring.nodes.length; i++) {
-			if (offSpring.nodes[i].layer != 0 && offSpring.nodes[i].output ==false) {
-				hiddenNodes++;
-			}
-			maxLayerness = Math.max(maxLayerness,offSpring.nodes[i].layer);
-		}
-
-		if(offSpring.layers != hiddenNodes + 2){
-			console.log('Error: something has gone wrong with crossover');
-			console.log('this: ');
-			console.log(this);
-			console.log('');
-			console.log('partner: ');
-			console.log(partner);
-			console.log('');
-			console.log('offSpring: ');
-			console.log(offSpring);
-			debugger;
-
-		}
-
-		if(offSpring.layers - 1 != maxLayerness){
-			console.log('Error: something has gone wrong with crossover.. layer gap');
-			console.log('this: ');
-			console.log(this);
-			console.log('');
-			console.log('partner: ');
-			console.log(partner);
-			console.log('');
-			console.log('offSpring: ');
-			console.log(offSpring);
-			debugger;
-
-		}
-
-
-
-
 		return offSpring;
-	}
-
-
-	this.debugger = function(){
-		var maxLayerness = 0;
-		for(var i = 0; i < this.nodes.length; i++) {
-			maxLayerness = Math.max(maxLayerness,this.nodes[i].layer);
-		}
-		if(this.layers - 1 != maxLayerness){
-			return true;
-		}
-		return false;
-
 	}
 
 
@@ -201,7 +142,7 @@ this.mutate = function(){
 
 //Mutate connection weights
 	if(Math.random() < 0.8) { //80%
-		console.log('Mutate connection weights');
+		//console.log('Mutate connection weights');
 		for(var i = 0; i < this.connections.length; i++) {
 			this.connections[i].mutateWeight();
 		}
@@ -210,7 +151,7 @@ this.mutate = function(){
 
 //Mutate node bias'
 	if(Math.random() < 0.5) { //50%
-		console.log('Mutate node bias');
+		//console.log('Mutate node bias');
 		for(var i = 0; i < this.nodes.length; i++) {
 			this.nodes[i].mutateBias();
 		}
@@ -219,24 +160,24 @@ this.mutate = function(){
 
 //Mutate a node activation function
 	if(Math.random() < 0.1) { //10%
-		console.log('Changing a nodes activation function');
+		//console.log('Changing a nodes activation function');
 		var i = Math.floor(Math.random() * this.nodes.length);
 		this.nodes[i].mutateActivation();
 	}
 
 //Add a connection
 	if(Math.random() < 0.05) { //5%
-		console.log('Add a connection');
+		//console.log('Add a connection');
 		this.addConnection();
 	}
 
 //Add a node
 	if(Math.random() < 0.03) { //3%
-		console.log('Add a node');
+		//console.log('Add a node');
 		this.addNode();
 	}
 
-	console.log('Done mutating.');
+	//console.log('Done mutating.');
 
 }
 
@@ -282,13 +223,6 @@ this.addConnection = function(){
 	while (this.nodes[node1].layer == this.nodes[node2].layer || this.nodesConnected(this.nodes[node1],this.nodes[node2])){
 		node1 = Math.floor(Math.random() * this.nodes.length);
 		node2 = Math.floor(Math.random() * this.nodes.length);
-		console.log('bug!');
-		console.log(this.nodes.length);
-		console.log(this.connections);
-		console.log(this.nodes);
-
-		iSuspectToBeLoopingInfititely();
-
 	}
 
 	//switch nodes based on their layer
@@ -373,12 +307,7 @@ this.addConnection = function(){
 			}
 		}
 
-		//output
-		console.log('kiwi');
-		console.log(nodesPerLayer);
-		console.log(maxConnections);
-		console.log(this.layers);
-		console.log(this);
+		
 		
 		return maxConnections == this.connections.length;
 

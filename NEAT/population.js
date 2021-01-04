@@ -134,24 +134,17 @@ function Population(size) {
 		for(var i = 0; i < champions.length; i++){
 			children.push(champions[i]);
 
-			if(champions[i].brain.debugger() == true){
-				debugger;
-			}
-
 		}
 		//console.log('champions added: ' + champions.length);
 
-	//25%: take the top 25% and mutate
+	//50%: take the top 50% and mutate
 
-		for(var i = 0; i < Math.floor(this.population.length - children.length) * 0.25; i++){
+		for(var i = 0; i < Math.floor(this.population.length - children.length) * 0.5; i++){
 			var playerToAdd = this.population[i];
 			playerToAdd.brain.mutate();
 			children.push(playerToAdd);
 			//console.log('adding child: a');
 
-			if(playerToAdd.brain.debugger() == true){
-				debugger;
-			}
 		}
 
 
@@ -191,7 +184,7 @@ function Population(size) {
 			this.population[i].brain.generateNetwork();
 		}
 
-
+		this.cleanPopulation();
 	}
 
 
@@ -199,6 +192,16 @@ function Population(size) {
 	this.selectPlayer = function(){
 		let rand = Math.floor(Math.random() *  this.matingPool.length);
 		return this.matingPool[rand];
+	}
+
+
+	this.cleanPopulation = function(){
+		for(var i = 0; i < this.population.length; i++){
+			this.population[i].score = 0;
+			this.population[i].fitness = 0;
+			this.population[i].dead = false;
+		}
+
 	}
 
 

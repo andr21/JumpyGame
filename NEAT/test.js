@@ -13,13 +13,13 @@
 
 //lets get a graph in showing average and max score
 
-//debug genome line 139
+//how can max score be going down??????
 
 
 
 //sort out calculate fitness!!
 
-var banana = new Population(100);
+var banana = new Population(150);
 
 function boob(){
 	console.log('boob');
@@ -30,16 +30,7 @@ function boob(){
 }
 
 function drawXOR(){
-
-	for(var i = 0; i < banana.population.length; i++){
-		if(banana.population[i].brain.debugger() == true){
-				console.log(banana.population[i]);
-				console.log(i);
-					debugger;
-				}
-	}
-
-
+	
 
 		if(!banana.allDone())
 		{
@@ -64,7 +55,7 @@ pauseplayXOR();
 function pauseplayXOR(){
 
   if(pauseXOR == true){
-    gameXOR = setInterval(drawXOR,2000);
+    gameXOR = setInterval(drawXOR,100);
     pauseXOR = false;
     console.log('Game unpaused');
   }else{

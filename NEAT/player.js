@@ -5,7 +5,6 @@ function Player(inp,out){
 	this.brain = new Genome(inp,out);
 
 	this.dead = false;
-	this.fitness;
 
 	this.score = 0;
 	this.fitness = 0;
