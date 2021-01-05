@@ -9,7 +9,7 @@ function Population(size) {
 		inputs:2,
 		outputs:1,
 		compDiffThreshold:3,
-		EDcoefficient:1,
+		EDcoefficient:0.8,
 		Wcoefficient:0.4
 	};
 
@@ -121,7 +121,8 @@ function Population(size) {
 		//best chap
 		this.population[0].brain.draw();
 		console.log(' ');
-		console.log('best chap:')
+		console.log('best chap:');
+		console.log(this.population[0]);
 		console.log('0,0: ' + this.population[0].brain.feedForward([0,0]));
 		console.log('1,0: ' + this.population[0].brain.feedForward([1,0]));
 		console.log('0,1: ' + this.population[0].brain.feedForward([0,1]));

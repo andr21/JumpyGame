@@ -134,8 +134,11 @@ function Player(inp,out){
 
 				for(var i = 0; i < 10; i++){
 					console.log('DONE!!');
-					pauseplayXOR();
+					
 				}
+				console.log(this);
+				console.log(banana);
+				pauseplayXOR();
 		}
 
 	}

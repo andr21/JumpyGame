@@ -16,9 +16,9 @@
 //how can max score be going down??????
 //after second loop ordering of fitness/scores is out.. something is wrong
 
-
-
 //sort out calculate fitness!!
+
+//best chap is not the fittest it is the one with the highest score. bug.. lots of missing nodes in places :S
 
 var banana = new Population(100);
 

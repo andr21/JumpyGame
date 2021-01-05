@@ -2,7 +2,7 @@
 var calls = 0;
 function iSuspectToBeLoopingInfititely() {
   calls += 1;
-  if (calls > 100) { debugger; }
+  if (calls > 500) { debugger; }
 }
 
 
@@ -237,7 +237,7 @@ this.addConnection = function(){
 
 		iSuspectToBeLoopingInfititely();
 
-		
+
 	}
 
 	//switch nodes based on their layer
