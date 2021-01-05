@@ -13,6 +13,7 @@ function Population(size) {
 		Wcoefficient:0.4
 	};
 
+	this.graphData = [];
 
 	this.activeSpecies = [];
 	//{id:1, example:"Doe", age:50, numberActive:"blue"}
@@ -355,6 +356,8 @@ function Population(size) {
 		console.log('Average number of nodes: ' + averageNodes);
 		console.log('Max Score: ' + maxScore);
 		console.log('Min Score: ' + minScore);
+
+		this.graphData.push({x: this.generation, y: maxScore})
 
 	}
 
