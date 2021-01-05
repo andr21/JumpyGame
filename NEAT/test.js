@@ -20,7 +20,7 @@
 
 //sort out calculate fitness!!
 
-var banana = new Population(10);
+var banana = new Population(100);
 
 function boob(){
 	console.log('boob');
@@ -43,7 +43,6 @@ function drawXOR(){
 			
 			banana.naturalSelection();
 
-			//console.log(banana.graphData);
 			drawGraph("Generation","Max Score",banana.graphData);
 			
 		}
@@ -59,7 +58,7 @@ pauseplayXOR();
 function pauseplayXOR(){
 
   if(pauseXOR == true){
-    gameXOR = setInterval(drawXOR,100);
+    gameXOR = setInterval(drawXOR,200);
     pauseXOR = false;
     console.log('Game unpaused');
   }else{

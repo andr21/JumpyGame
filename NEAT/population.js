@@ -133,7 +133,7 @@ function Population(size) {
 
 
 		for(var i = 0; i < champions.length; i++){
-			children.push(champions[i]);
+			children.push(champions[i].clone());
 
 		}
 		//console.log('champions added: ' + champions.length);
@@ -141,7 +141,7 @@ function Population(size) {
 	//50%: take the top 50% and mutate
 
 		for(var i = 0; i < Math.floor((this.population.length - children.length) * 0.5); i++){
-			var playerToAdd = this.population[i];
+			var playerToAdd = this.population[i].clone();
 			playerToAdd.brain.mutate();
 			children.push(playerToAdd);
 			//console.log('adding child: a');
@@ -153,6 +153,7 @@ function Population(size) {
 
 		//fill mating pool
 		//TODOneed to think about this more.. especially the divide by 2
+		this.matingPool = [];
 		for(var i = 0; i < Math.floor(this.population.length / 2); i++){
 			this.matingPool.push(this.population[i]);
 			
@@ -301,7 +302,7 @@ function Population(size) {
 		for(var i = 0; i < this.population.length; i++){
 			for(var j = 0; j < this.activeSpecies.length; j++){
 				
-				if(this.population[i].speciesId = undefined){
+				if(this.population[i].speciesId == undefined){
 					console.log('missing species id');
 					debugger;
 				}

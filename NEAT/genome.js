@@ -1,4 +1,10 @@
 
+var calls = 0;
+function iSuspectToBeLoopingInfititely() {
+  calls += 1;
+  if (calls > 100) { debugger; }
+}
+
 
 function Genome(inp, out, offSpring = false){
 
@@ -223,6 +229,15 @@ this.addConnection = function(){
 	while (this.nodes[node1].layer == this.nodes[node2].layer || this.nodesConnected(this.nodes[node1],this.nodes[node2])){
 		node1 = Math.floor(Math.random() * this.nodes.length);
 		node2 = Math.floor(Math.random() * this.nodes.length);
+
+		console.log('bug!');
+		console.log(this.nodes.length);
+		console.log(this.connections);
+		console.log(this.nodes);
+
+		iSuspectToBeLoopingInfititely();
+
+		
 	}
 
 	//switch nodes based on their layer
@@ -248,8 +263,10 @@ this.addConnection = function(){
 
 	this.clone = function() { //Returns a copy of this genome
 		let clone = new Genome(this.inputs, this.outputs, true);
-		clone.nodes = this.nodes.slice(0, this.nodes.length);
-		clone.connections = this.connections.slice(0, this.connections.length);
+		//clone.nodes = this.nodes.slice(0, this.nodes.length);
+		//clone.connections = this.connections.slice(0, this.connections.length);
+		clone.nodes = this.nodes;
+		clone.connections = this.connections;
 		clone.layers = this.layers;
 		clone.nextNode = this.nextNode;
 
