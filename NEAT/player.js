@@ -141,7 +141,7 @@ function Player(inp,out){
 				}
 				console.log(this);
 				console.log(banana);
-				pauseplayXOR();
+				//pauseplayXOR();
 		}
 
 	}
@@ -162,8 +162,16 @@ function Player(inp,out){
 
 	this.calculateFitness = function(){
 		//console.log('Score: ' + this.score);
-		this.fitness = Math.pow(this.score,2);
+		//this.fitness = Math.pow(this.score,2);
 		//console.log('Fitness: ' + this.fitness);
+
+				this.fitness =
+		4 -
+		Math.pow(this.brain.feedForward([0,0]) - 0, 2) -
+		Math.pow(this.brain.feedForward([1,0]) - 1, 2) -
+		Math.pow(this.brain.feedForward([0,1]) - 1, 2) -
+		Math.pow(this.brain.feedForward([1,1]) - 0, 2)
+		;
 	}
 
 

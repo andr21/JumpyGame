@@ -9,7 +9,7 @@ function Population(size) {
 		inputs:2,
 		outputs:1,
 		//less the number, the more species
-		compDiffThreshold:1.5,
+		compDiffThreshold:3,
 		//larger the numbers, the more species
 		EDcoefficient:1,
 		Wcoefficient:0.4
