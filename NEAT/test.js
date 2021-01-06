@@ -20,7 +20,7 @@
 
 //best chap is not the fittest it is the one with the highest score. bug.. lots of missing nodes in places :S
 
-var banana = new Population(10);
+var banana = new Population(100);
 
 function boob(){
 	console.log('boob');

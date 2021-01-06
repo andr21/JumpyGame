@@ -75,6 +75,8 @@ function Population(size) {
 		this.splitIntoSpecies();
 		this.calculateFitness();
 
+		
+
 		console.log('Average score: ' + this.getAverageScore());
 		this.stats();
 
@@ -135,19 +137,26 @@ function Population(size) {
 
 		for(var i = 0; i < champions.length; i++){
 			children.push(champions[i].clone());
-
+			champions[i].clone().brain.debugger("Something wrong with champions");
 		}
 		//console.log('champions added: ' + champions.length);
 
 	//50%: take the top 50% and mutate
-
+		this.debugger("random guess1");
 		for(var i = 0; i < Math.floor((this.population.length - children.length) * 0.5); i++){
 			var playerToAdd = this.population[i].clone();
+			//playerToAdd.brain.generateNetwork();
+			this.population[i].brain.debugger("Something wrong with population i");
 			playerToAdd.brain.mutate();
+
 			children.push(playerToAdd);
+
+			playerToAdd.brain.debugger("Something wrong with playertoadd");
+
 			//console.log('adding child: a');
 
 		}
+		this.debugger("random guess2");
 
 
 	//50%: cross over randomly with the top 50%
@@ -162,11 +171,25 @@ function Population(size) {
 
 		var numToAdd = children.length;
 		for(let i = 0; i < this.population.length - numToAdd; i++){
-			let parent1 = this.selectPlayer();
-			//TODO do we want this to always be differnt parents currently they could be the same
-			let parent2 = this.selectPlayer();
-			var toBeAdded = parent1.crossover(parent2);
+
+				
+
+				var parent1 = Math.floor(Math.random() * this.matingPool.length);
+				var parent2 = Math.floor(Math.random() * this.matingPool.length);
+
+				//*two valid nodes
+				while (parent1 == parent2){
+					parent1 = Math.floor(Math.random() * this.matingPool.length);
+					parent2 = Math.floor(Math.random() * this.matingPool.length);
+				}
+
+
+
+			this.matingPool[parent1].brain.debugger("Something wrong with parent1")
+			this.matingPool[parent2].brain.debugger("Something wrong with parent2")
+			var toBeAdded = this.matingPool[parent1].crossover(this.matingPool[parent2]);
 				children.push(toBeAdded);
+				toBeAdded.brain.debugger("Something wrong with toBeAdded");
 				//console.log('numToAdd: ' + numToAdd);
 				//console.log('adding child: b');
 			
@@ -223,7 +246,7 @@ function Population(size) {
 						console.log('boo');
 						champions.splice(j,1);
 						j--;
-						champions.push(this.population[i])
+						champions.push(this.population[i].clone())
 
 					} 
 					newChampNeeded = false;
@@ -231,7 +254,7 @@ function Population(size) {
 			}
 
 			if(newChampNeeded == true){
-				champions.push(this.population[i]);
+				champions.push(this.population[i].clone());
 			}
 
 		}
@@ -364,9 +387,9 @@ function Population(size) {
 	}
 
 
-	this.debugger = function(){
+	this.debugger = function(message = ""){
 		for(var i = 0; i < this.population.length; i++){
-			this.population[i].brain.debugger();
+			this.population[i].brain.debugger(message);
 		}
 
 	}

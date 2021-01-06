@@ -17,6 +17,9 @@ function Player(inp,out){
 	this.clone = function() { //Returns a copy of this player
 		let clone = new Player();
 		clone.brain = this.brain.clone();
+		clone.score = this.score;
+		clone.fitness = this.fitness;
+		clone.speciesId = this.speciesId;
 		return clone;
 	}
 
