@@ -8,8 +8,10 @@ function Population(size) {
 	this.config = {
 		inputs:2,
 		outputs:1,
-		compDiffThreshold:3,
-		EDcoefficient:0.8,
+		//less the number, the more species
+		compDiffThreshold:1.5,
+		//larger the numbers, the more species
+		EDcoefficient:1,
 		Wcoefficient:0.4
 	};
 
@@ -121,14 +123,16 @@ function Population(size) {
 		});
 
 		//best chap
-		this.population[0].brain.draw();
+		var bestIndex = this.getBestScoreIndex();
+		console.log('Index: ' + bestIndex)
+		this.population[bestIndex].brain.draw();
 		console.log(' ');
 		console.log('best chap:');
-		console.log(this.population[0]);
-		console.log('0,0: ' + this.population[0].brain.feedForward([0,0]));
-		console.log('1,0: ' + this.population[0].brain.feedForward([1,0]));
-		console.log('0,1: ' + this.population[0].brain.feedForward([0,1]));
-		console.log('1,1: ' + this.population[0].brain.feedForward([1,1]));
+		console.log(this.population[bestIndex]);
+		console.log('0,0: ' + this.population[bestIndex].brain.feedForward([0,0]));
+		console.log('1,0: ' + this.population[bestIndex].brain.feedForward([1,0]));
+		console.log('0,1: ' + this.population[bestIndex].brain.feedForward([0,1]));
+		console.log('1,1: ' + this.population[bestIndex].brain.feedForward([1,1]));
 
 	//	champion of each species with more than 5 players gets copied accross with no changes
 		var children = [];
@@ -215,17 +219,30 @@ function Population(size) {
 	}
 
 
-
+	//TO DO think this function is redundant now
 	this.selectPlayer = function(){
 		let rand = Math.floor(Math.random() *  this.matingPool.length);
 		return this.matingPool[rand];
 	}
 
+	this.getBestScoreIndex = function() {
+		var bestScore = 0
+		var index = 0
+		for(var i = 0; i < this.population.length; i++){
+			if(this.population[i].score > bestScore){
+				bestScore = this.population[i].score;
+				index = i;
+			}
+		}
+
+		return index;
+	}
+
 
 	this.cleanPopulation = function(){
 		for(var i = 0; i < this.population.length; i++){
-			this.population[i].score = 0;
-			this.population[i].fitness = 0;
+			this.population[i].score = 0.0;
+			this.population[i].fitness = 0.0;
 			this.population[i].dead = false;
 		}
 
@@ -381,6 +398,8 @@ function Population(size) {
 		console.log('Average number of nodes: ' + averageNodes);
 		console.log('Max Score: ' + maxScore);
 		console.log('Min Score: ' + minScore);
+		console.log('Number of species: ' + this.activeSpecies.length);
+
 
 		this.graphData.push({x: this.generation, y: maxScore})
 

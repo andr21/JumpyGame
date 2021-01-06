@@ -59,7 +59,7 @@ pauseplayXOR();
 function pauseplayXOR(){
 
   if(pauseXOR == true){
-    gameXOR = setInterval(drawXOR,500);
+    gameXOR = setInterval(drawXOR,400);
     pauseXOR = false;
     console.log('Game unpaused');
   }else{

@@ -137,9 +137,6 @@ function Genome(inp, out, offSpring = false){
 		}
 
 		offSpring.layers = this.layers;
-		console.log(this);
-		console.log(partner);
-		offSpring.debugger("yoyoyoyoyo");
 
 		return offSpring;
 	}
@@ -240,10 +237,10 @@ this.addConnection = function(){
 		node1 = Math.floor(Math.random() * this.nodes.length);
 		node2 = Math.floor(Math.random() * this.nodes.length);
 
-		console.log('bug!');
-		console.log(this.nodes.length);
-		console.log(this.connections);
-		console.log(this.nodes);
+		//console.log('bug!');
+		//console.log(this.nodes.length);
+		//console.log(this.connections);
+		//console.log(this.nodes);
 
 		iSuspectToBeLoopingInfititely();
 
@@ -324,8 +321,14 @@ this.addConnection = function(){
 		this.nodes.forEach((node)=>{
 			clone.nodes.push(node.clone());
 		});
+
 		this.connections.forEach((connection)=>{
-			clone.connections.push(connection.clone());
+			connToAdd = connection.clone()
+				var fromNode = clone.nodes[clone.getNode(connToAdd.fromNode.number)];
+				var toNode = clone.nodes[clone.getNode(connToAdd.toNode.number)];
+				connToAdd.fromNode = fromNode;
+				connToAdd.toNode = toNode;
+			clone.connections.push(connToAdd);
 		});
 
 		//clone.nodes = this.nodes;
