@@ -261,6 +261,47 @@ this.addConnection = function(){
 
 //Utilities
 
+
+	this.debugger = function(){
+
+
+		var helperArray = []
+		var hiddenNodes = 0;
+		for(var i = 0; i < this.nodes.length; i++) {
+
+			if (this.nodes[i].layer != 0 && this.nodes[i].output ==false) {
+				hiddenNodes++;
+			}
+
+			var dupe = false;
+			for(var j = 0; j < helperArray.length; j++) {
+				if(this.nodes[i].number == helperArray[j]){
+					dupe = true;
+				}
+			}
+			if(dupe == true){
+				console.log('Error: something has gone wrong node numbers');
+				console.log('this: ');
+				console.log(this);
+				debugger;
+			}else{
+				helperArray.push(this.nodes[i].number);
+			}
+
+
+		}
+
+		if(this.layers != hiddenNodes + 2){
+			console.log('Error: something has gone wrong with layers');
+			console.log('this: ');
+			console.log(this);
+			debugger;
+		}
+
+
+
+	}
+
 	this.clone = function() { //Returns a copy of this genome
 		let clone = new Genome(this.inputs, this.outputs, true);
 		//clone.nodes = this.nodes.slice(0, this.nodes.length);

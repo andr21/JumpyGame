@@ -20,7 +20,7 @@
 
 //best chap is not the fittest it is the one with the highest score. bug.. lots of missing nodes in places :S
 
-var banana = new Population(100);
+var banana = new Population(10);
 
 function boob(){
 	console.log('boob');
@@ -42,6 +42,7 @@ function drawXOR(){
 			//pauseplayXOR();
 			
 			banana.naturalSelection();
+			banana.debugger();
 
 			drawGraph("Generation","Max Score",banana.graphData);
 			
@@ -58,7 +59,7 @@ pauseplayXOR();
 function pauseplayXOR(){
 
   if(pauseXOR == true){
-    gameXOR = setInterval(drawXOR,200);
+    gameXOR = setInterval(drawXOR,500);
     pauseXOR = false;
     console.log('Game unpaused');
   }else{

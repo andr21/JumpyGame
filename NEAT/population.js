@@ -364,5 +364,13 @@ function Population(size) {
 	}
 
 
+	this.debugger = function(){
+		for(var i = 0; i < this.population.length; i++){
+			this.population[i].brain.debugger();
+		}
+
+	}
+
+
 
 }
