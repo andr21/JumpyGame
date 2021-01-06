@@ -140,8 +140,8 @@ function Player(inp,out){
 					
 				}
 				console.log(this);
-				console.log(banana);
-				//pauseplayXOR();
+				console.log('Nodes: ' + this.brain.nodes.length);
+				pauseplayXOR();
 		}
 
 	}

@@ -42,7 +42,6 @@ function drawXOR(){
 			//pauseplayXOR();
 			
 			banana.naturalSelection();
-			banana.debugger();
 
 			drawGraph("Generation","Max Score",banana.graphData);
 			
@@ -59,7 +58,7 @@ pauseplayXOR();
 function pauseplayXOR(){
 
   if(pauseXOR == true){
-    gameXOR = setInterval(drawXOR,400);
+    gameXOR = setInterval(drawXOR,100);
     pauseXOR = false;
     console.log('Game unpaused');
   }else{

@@ -1,9 +1,11 @@
 
+/*
 var calls = 0;
 function iSuspectToBeLoopingInfititely() {
   calls += 1;
   if (calls > 500) { debugger };
 }
+*/
 
 
 function Genome(inp, out, offSpring = false){
@@ -153,7 +155,6 @@ this.mutate = function(){
 		for(var i = 0; i < this.connections.length; i++) {
 			this.connections[i].mutateWeight();
 		}
-		this.debugger("weight");
 
 	}
 
@@ -163,7 +164,6 @@ this.mutate = function(){
 		for(var i = 0; i < this.nodes.length; i++) {
 			this.nodes[i].mutateBias();
 		}
-		this.debugger("bias");
 	}
 
 
@@ -172,25 +172,21 @@ this.mutate = function(){
 		//console.log('Changing a nodes activation function');
 		var i = Math.floor(Math.random() * this.nodes.length);
 		this.nodes[i].mutateActivation();
-		this.debugger("activation");
 	}
 
 //Add a connection
 	if(Math.random() < 0.05) { //5%
 		//console.log('Add a connection');
 		this.addConnection();
-		this.debugger("add connection");
 	}
 
 //Add a node
 	if(Math.random() < 0.03) { //3%
 		//console.log('Add a node');
 		this.addNode();
-		this.debugger("add node");
 	}
 
 	//console.log('Done mutating.');
-	this.debugger("mutations combined?");
 }
 
 
@@ -232,17 +228,9 @@ this.addConnection = function(){
 	var node2 = Math.floor(Math.random() * this.nodes.length);
 
 	//*two valid nodes
-	calls = 0;
 	while (this.nodes[node1].layer == this.nodes[node2].layer || this.nodesConnected(this.nodes[node1],this.nodes[node2])){
 		node1 = Math.floor(Math.random() * this.nodes.length);
 		node2 = Math.floor(Math.random() * this.nodes.length);
-
-		//console.log('bug!');
-		//console.log(this.nodes.length);
-		//console.log(this.connections);
-		//console.log(this.nodes);
-
-		iSuspectToBeLoopingInfititely();
 
 
 	}
@@ -268,7 +256,7 @@ this.addConnection = function(){
 
 //Utilities
 
-
+/*
 	this.debugger = function(message = ""){
 
 
@@ -310,6 +298,7 @@ this.addConnection = function(){
 
 
 	}
+	*/
 
 	this.clone = function() { //Returns a copy of this genome
 		let clone = new Genome(this.inputs, this.outputs, true);
