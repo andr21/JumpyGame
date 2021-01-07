@@ -240,11 +240,6 @@ this.addConnection = function(){
 
 
 
-
-
-
-
-
 //Utilities
 
 
@@ -252,11 +247,12 @@ this.addConnection = function(){
 		let clone = new Genome(this.inputs, this.outputs, true);
 
 		clone.nodes = [];
-		clone.connections = [];
+		
 		this.nodes.forEach((node)=>{
 			clone.nodes.push(node.clone());
 		});
 
+		clone.connections = [];
 		this.connections.forEach((connection)=>{
 			connToAdd = connection.clone()
 				var fromNode = clone.nodes[clone.getNode(connToAdd.fromNode.number)];
@@ -266,8 +262,6 @@ this.addConnection = function(){
 			clone.connections.push(connToAdd);
 		});
 
-		//clone.nodes = this.nodes;
-		//clone.connections = this.connections;
 		clone.layers = this.layers;
 		clone.nextNode = this.nextNode;
 
@@ -289,11 +283,6 @@ this.addConnection = function(){
 
 		//Calculate all possible connections
 		//(this works because all hidden nodes are on their own layer, so this is simply inputs and outputs cannot be connected to themselves)
-		
-		//for(var i = 0; i < this.layers - 1; i++) {
-		//	nodesPerLayer[i] = 0;
-		//}
-
 		this.nodes.forEach((node)=>{
 			if(nodesPerLayer[node.layer] != undefined){
 				nodesPerLayer[node.layer]++;
@@ -301,34 +290,23 @@ this.addConnection = function(){
 				nodesPerLayer[node.layer] =1;
 			}
 		});
-		
 
-
-		//this.nodes.forEach((node)=>{
-		//		nodesPerLayer[node.layer]++;
-		//});
-
-
+		//catch some bugs
 		for(var i = 0; i < nodesPerLayer.length - 1; i++) {
 			if(nodesPerLayer[i] == undefined){
-				nodesPerLayer[i] = 0;
+				console.log("Error, bug, this should never hit")
+				debugger;
+				//nodesPerLayer[i] = 0;
 			}
 		}
 		
-		
-
-
-
 		for(var i = 0; i < this.layers - 1; i++) {
 			for(var j = i + 1; j < this.layers; j++) {
 				maxConnections += nodesPerLayer[i] * nodesPerLayer[j];
 			}
 		}
 
-		
-		
 		return maxConnections == this.connections.length;
-
 
 	}
 
@@ -369,7 +347,6 @@ this.addConnection = function(){
 		var absWeightDiff = 0;
 		var numMatchingConnections = 0;
 		for(let i = 0; i < this.connections.length; i++){
-			//console.log('yo');
 			var lookup = this.commonConnection(this.connections[i].getInnovationNumber(), partner.connections);
 			if(lookup != -1){
 				numMatchingConnections ++;

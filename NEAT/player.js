@@ -32,10 +32,9 @@ function Player(inp,out){
 			child.brain = partner.brain.crossover(this.brain);
 		}
 
-		//TODO mutate straight after cross over? check this
+		//mutating after crossover
 		child.brain.mutate();
 		return child;
-
 	}
 
 
@@ -79,7 +78,6 @@ function Player(inp,out){
 	//XOR
 	this.val = 0;
 	this.correctVal;
-	this.turns = 20;
 
 	function XOR(in1,in2){
 		if( ( in1 && !in2 ) || ( !in1 && in2 ) ) {
@@ -89,30 +87,16 @@ function Player(inp,out){
 	}
 
 	this.look = function(){
-		//var input1 = Math.random()>0.5 ? 1 : 0;
-		//var input2 = Math.random()>0.5 ? 1 : 0;
-		//this.correctVal = XOR(input1,input2);
-		//this.vision = [input1 , input2];
-		//console.log('input1: ' + input1);
-		//console.log('input2: ' + input2);
-		//console.log('correctVal: ' + this.correctVal);
-
-
 	}
 
 	this.think = function(){
-		//this.decisions = this.brain.feedForward(this.vision);
 	}
 
 	this.move = function(){
-		//this.val += Math.abs(this.decisions[0] - this.correctVal)
-		//console.log('raw decision: ' + this.decisions[0]);
-		//console.log('val: ' + this.val);
 	}
 
 	this.update = function(){
 
-	
 		this.score =
 		4 -
 		Math.abs(this.brain.feedForward([0,0]) - 0) -
@@ -123,7 +107,6 @@ function Player(inp,out){
 
 			this.dead = true;
 		
-
 	}
 
 	this.show = function(){
@@ -141,6 +124,7 @@ function Player(inp,out){
 				}
 				console.log(this);
 				console.log('Nodes: ' + this.brain.nodes.length);
+				this.brain.draw();
 				pauseplayXOR();
 		}
 
@@ -149,11 +133,8 @@ function Player(inp,out){
 
 
 
-
-
-
 	this.compatabilityDistance = function(otherPlayer, EDcoefficient, Wcoefficient){
-		//using neats formula but with excess and sijoint together
+		//using neats formula but with excess and disjoint together
 		var weightDiff = this.brain.averageWeightDifference(otherPlayer.brain);
 		return Math.abs(this.brain.connections.length - otherPlayer.brain.connections.length)*EDcoefficient + weightDiff*Wcoefficient;
 
@@ -161,11 +142,7 @@ function Player(inp,out){
 
 
 	this.calculateFitness = function(){
-		//console.log('Score: ' + this.score);
-		//this.fitness = Math.pow(this.score,2);
-		//console.log('Fitness: ' + this.fitness);
-
-				this.fitness =
+		this.fitness =
 		4 -
 		Math.pow(this.brain.feedForward([0,0]) - 0, 2) -
 		Math.pow(this.brain.feedForward([1,0]) - 1, 2) -

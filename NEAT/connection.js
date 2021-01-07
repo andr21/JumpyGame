@@ -1,18 +1,14 @@
 
 function Connection(from, to, weight = Math.random() * 2 - 1){
-	this.fromNode = from; //type: Node
-	this.toNode = to; //type: Node
-	//what should the initial weights be?
-	//this.weight = Math.random() * this.inputs * Math.sqrt(2/this.inputs);
-	this.weight = weight; //type: Number
+	this.fromNode = from;
+	this.toNode = to;
+	this.weight = weight; //default: number between -1 and 1
 	this.enabled = true;
 
 	this.mutateWeight = function() {
 		if(Math.random() < 0.1) { //10% chance to set new weight randomly
 			this.weight = Math.random() * 2 - 1;
 		} else { //90% chance to amend weight
-
-			//this needs thinking about/investigating
 			this.weight += rand_bm()/20;
 		}
 

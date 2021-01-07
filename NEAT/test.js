@@ -22,7 +22,15 @@
 
 //had a look over up to genome utilities and the second half of test
 
-var banana = new Population(100);
+//if a species doesn't improve by x amount then it cant reproduce is what is needed. How do you implement that? take them out the mating pool maybe?
+//Orrrrr reduce their fitness further in the fitness sharing bit
+
+// at the moment species will always get bigger due to get champions, need to implement the if > 5 species, but I think the no repoduction after 15 needs implementing first
+
+
+// do we need to generate network before we mutate? I think yes? if so just put it at the start of the mutate function
+
+var banana = new Population(150);
 
 function boob(){
 	console.log('boob');

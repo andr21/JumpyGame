@@ -1,4 +1,10 @@
 
+
+
+//Parameters to consider:
+// - mutate node bias and mutate connection weight amounts
+
+
 function Population(size) {
 	this.population = [];
 
@@ -18,28 +24,10 @@ function Population(size) {
 	this.graphData = [];
 
 	this.activeSpecies = [];
-	//{id:1, example:"Doe", age:50, numberActive:"blue"}
-	//+ max fitness? + age since max fitness increased??
-
-
-//split them up into species
-	//	edcoef= 1
-	//	wcoef =0.4
-	//	compdiff =3
-	//	max fitness of specieces not improve in 15 generations then cant reproduce
-	//	champion of each species with more than 5 players getscopied accross with no changes
-	//	new pop: 25% just mutation
-
-
-	//once we've split into species we can implement the fitness sharing and max fitness after 15 generations
-
-
-	//keeps erroring out somewhere/ infinite loop... need to solve
 
 
 	for(var i = 0; i < size; i++){
 		this.population.push(new Player(this.config.inputs,this.config.outputs));
-		//TODO: are these two next bits needed??
 		this.population[i].brain.generateNetwork();
 		this.population[i].brain.mutate();
 	}
@@ -49,7 +37,6 @@ function Population(size) {
 	this.updateAlive = function(){
 		for(var i = 0; i < this.population.length; i++){
 			if(!this.population[i].dead){
-				//console.log(i);
 				  this.population[i].look();
 				  this.population[i].think();
 				  this.population[i].move();
@@ -78,61 +65,16 @@ function Population(size) {
 		this.calculateFitness();
 
 		
-
-		console.log('Average score: ' + this.getAverageScore());
+		//some stats
 		this.stats();
 
-		/*
-
-		//TODO: temporary natural selection
-		this.population.sort((a, b) => {
-			return a.fitness - b.fitness;
-		});
-		var deletey = this.population.length/2;
-		this.population.splice(0,this.population.length/2);
-		
-
-		for(var j = 0; j < deletey; j++){
-			this.population.push(this.population[j+2].crossover(this.population[j+3]));
-		}
-
-		//add some more for fun
-		var champions = this.getChampions();
-		this.population.splice(0,champions.length);
-		this.population = this.population.concat(champions);
-
-
-
-		for(var i = 0; i < this.population.length; i++){
-			this.population[i].brain.mutate();
-			this.population[i].dead = false;
-			this.population[i].score = 0;
-			this.population[i].turns = 20;
-		}
-
-
-
-		//end of TODO
-		*/
-
-
-
+	
 		//sort population by fitness, fittest first
 		this.population.sort((a, b) => {
 			return b.fitness - a.fitness;
 		});
 
-		//best chap
-		var bestIndex = this.getBestScoreIndex();
-		console.log('Index: ' + bestIndex)
-		this.population[bestIndex].brain.draw();
-		console.log(' ');
-		console.log('best chap:');
-		console.log(this.population[bestIndex]);
-		console.log('0,0: ' + this.population[bestIndex].brain.feedForward([0,0]));
-		console.log('1,0: ' + this.population[bestIndex].brain.feedForward([1,0]));
-		console.log('0,1: ' + this.population[bestIndex].brain.feedForward([0,1]));
-		console.log('1,1: ' + this.population[bestIndex].brain.feedForward([1,1]));
+
 
 	//	champion of each species with more than 5 players gets copied accross with no changes
 		var children = [];
@@ -147,13 +89,10 @@ function Population(size) {
 	//50%: take the top 50% and mutate
 		for(var i = 0; i < Math.floor((this.population.length - children.length) * 0.5); i++){
 			var playerToAdd = this.population[i].clone();
-			//playerToAdd.brain.generateNetwork();
+			playerToAdd.brain.generateNetwork();
 			playerToAdd.brain.mutate();
 
 			children.push(playerToAdd);
-
-
-			//console.log('adding child: a');
 
 		}
 
@@ -161,7 +100,7 @@ function Population(size) {
 	//50%: cross over randomly with the top 50%
 
 		//fill mating pool
-		//TODOneed to think about this more.. especially the divide by 2
+		//TODO: need to think about this more.. especially the divide by 2
 		this.matingPool = [];
 		for(var i = 0; i < Math.floor(this.population.length / 2); i++){
 			this.matingPool.push(this.population[i]);
@@ -185,17 +124,12 @@ function Population(size) {
 
 			var toBeAdded = this.matingPool[parent1].crossover(this.matingPool[parent2]);
 				children.push(toBeAdded);
-				//console.log('numToAdd: ' + numToAdd);
-				//console.log('adding child: b');
 			
 		}
 
 		//remainder: crossover and mutate
 		//TODO not currently doing this as we currently always mutate when we crossover..needs checking
 
-
-
-		//console.log(children);
 
 		this.generation++;
 		console.log('Generation: ' + this.generation);
@@ -210,7 +144,7 @@ function Population(size) {
 	}
 
 
-	//TO DO think this function is redundant now
+	//TO DO: think this function is redundant now
 	this.selectPlayer = function(){
 		let rand = Math.floor(Math.random() *  this.matingPool.length);
 		return this.matingPool[rand];
@@ -225,7 +159,6 @@ function Population(size) {
 				index = i;
 			}
 		}
-
 		return index;
 	}
 
@@ -251,7 +184,6 @@ function Population(size) {
 				if (this.population[i].speciesId == champions[j].speciesId) {
 					if(this.population[i].fitness > champions[j].fitness){
 						//replace champion
-						console.log('boo');
 						champions.splice(j,1);
 						j--;
 						champions.push(this.population[i].clone())
@@ -283,7 +215,7 @@ function Population(size) {
 			var newSpecies = true;
 			for(var j = 0; j < this.activeSpecies.length; j++){
 				var compdiff = this.population[i].compatabilityDistance(this.activeSpecies[j].example,this.config.EDcoefficient,this.config.Wcoefficient);
-				//console.log('compdiff: ' + compdiff);
+				
 				if(compdiff <= this.config.compDiffThreshold){ //in the same species
 					this.population[i].speciesId = this.activeSpecies[j].id;
 					this.activeSpecies[j].numberActive++;
@@ -302,7 +234,7 @@ function Population(size) {
 		for(var j = 0; j < this.activeSpecies.length; j++){ //delete empty species
 			
 			if(this.activeSpecies[j].numberActive == 0){
-				//console.log(j);
+				console.log('Species removed');
 				this.activeSpecies.splice(j,1);
 				j--;
 			}
@@ -316,16 +248,6 @@ function Population(size) {
 		this.population.forEach((player) => { 
 			player.calculateFitness();
 
-			//TODO: this is where the bestome gets drawn, do I want this?
-			//if(player.fitness > this.bestFitness){
-			//	this.bestFitness = player.fitness;
-			//	this.bestPlayer = player.clone();
-			//	this.bestPlayer.brain.id = "BestGenome";
-			//	this.bestPlayer.brain.draw();
-			//}
-
-			//if(player.fitness > currentMax)
-				//currentMax = player.fitness;
 		});
 
 
@@ -340,9 +262,7 @@ function Population(size) {
 				}
 
 				if(this.population[i].speciesId == this.activeSpecies[j].id){
-					//console.log('fitness before :' + this.population[i].fitness);
 					this.population[i].fitness /= this.activeSpecies[j].numberActive;
-					//console.log('fitness after :' + this.population[i].fitness);
 				}
 			}
 		}
@@ -353,9 +273,8 @@ function Population(size) {
 				currentMax = player.fitness;
 		});
 
-		//console.log(currentMax);
 
-				//Normalize
+		//Normalize
 		this.population.forEach((player) => { 
 			player.fitness /= currentMax;
 		});
@@ -374,7 +293,22 @@ function Population(size) {
 	}
 
 	this.stats = function(){
-	
+
+		console.log('Average score: ' + this.getAverageScore());
+
+		//best chap
+		var bestIndex = this.getBestScoreIndex();
+		console.log('Index: ' + bestIndex)
+		this.population[bestIndex].brain.draw();
+		console.log(' ');
+		console.log('best chap:');
+		console.log(this.population[bestIndex]);
+		console.log('0,0: ' + this.population[bestIndex].brain.feedForward([0,0]));
+		console.log('1,0: ' + this.population[bestIndex].brain.feedForward([1,0]));
+		console.log('0,1: ' + this.population[bestIndex].brain.feedForward([0,1]));
+		console.log('1,1: ' + this.population[bestIndex].brain.feedForward([1,1]));
+
+
 		let maxScore = 0;
 		let minScore = 100000;
 		let totalNodes = 0;

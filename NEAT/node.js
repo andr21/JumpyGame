@@ -7,8 +7,11 @@ function Node(num, lay, isOutput = false){
 
 	this.bias = Math.random() * 2 - 1; //Bias between -1 and 1
 	this.output = isOutput;
+
+	//keeping all activation functions as sigmoid
 	//this.activationFunction = Math.floor(Math.random() * 5); //Number between 0 and 4
 	this.activationFunction = 0;
+
 	this.inputSum = 0;
 	this.outputValue = 0;
 	this.outputConnections = [];
@@ -31,13 +34,10 @@ function Node(num, lay, isOutput = false){
 		if (Math.random() < 0.1) //10% chance to set new bias randomly
 			this.bias = Math.random() * 2 - 1;
 		else //90% chance to amend weight
-
-			//TODO this needs thinking about/investigating
 			this.bias += rand_bm()/20;
 	}
 
 	this.mutateActivation = function() { //Randomly choose a new activationFunction
-		//console.log('mutate activation called from somewhere');
 		//this.activationFunction = Math.floor(Math.random() * 5); //Number between 0 and 4
 		this.activationFunction = 0;
 	}
