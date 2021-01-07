@@ -1,12 +1,4 @@
 
-/*
-var calls = 0;
-function iSuspectToBeLoopingInfititely() {
-  calls += 1;
-  if (calls > 500) { debugger };
-}
-*/
-
 
 function Genome(inp, out, offSpring = false){
 
@@ -40,7 +32,6 @@ function Genome(inp, out, offSpring = false){
 			}
 		}
 
-
 	}
 
 
@@ -61,6 +52,8 @@ function Genome(inp, out, offSpring = false){
 	}
 
 	this.feedForward = function(inputValues) {
+		if (inputValues.length != this.inputs) {console.log('Error! number of inputs does not match network')}
+
 		this.generateNetwork(); //Connect all up
 
 		//Clear old inputs
@@ -87,7 +80,8 @@ function Genome(inp, out, offSpring = false){
 	//Crossover
 	this.crossover = function(partner){
 		var offSpring = new Genome(this.inputs, this.outputs, true); //Child genome
-		offSpring.nextNode = this.nextNode; 
+		offSpring.nextNode = this.nextNode;
+		offSpring.layers = this.layers;
 
 
 		//Take all nodes from this parent - output node activation 50%-50%
@@ -108,7 +102,7 @@ function Genome(inp, out, offSpring = false){
 		for(var i = 0; i < this.connections.length; i++) {
 			var index = this.commonConnection(this.connections[i].getInnovationNumber(), partner.connections);
 			
-			if(index != -1) { //There is a commonConnection
+			if(index != -1) { //Is a shared Connection -> 50/50
 				var conn = Math.random() > 0.5 ? this.connections[i].clone() : partner.connections[index].clone();
 				
 				//Reassign nodes
@@ -122,7 +116,7 @@ function Genome(inp, out, offSpring = false){
 					offSpring.connections.push(conn);
 				}
 				
-			} else { //No common connection -> take from this
+			} else { //Not a shared connection -> take from this
 				let conn = this.connections[i].clone();
 				
 				//Reassign nodes
@@ -137,8 +131,6 @@ function Genome(inp, out, offSpring = false){
 				}
 			}
 		}
-
-		offSpring.layers = this.layers;
 
 		return offSpring;
 	}
@@ -220,7 +212,7 @@ this.addConnection = function(){
 
 	if(this.fullyConnected()){
 		//console.log('unable to add connection, fully connected')
-		return; //Cannot adda connection as fully connected
+		return; //Cannot add a connection as fully connected
 	}
 
 	//Two random nodes to connect
@@ -231,7 +223,6 @@ this.addConnection = function(){
 	while (this.nodes[node1].layer == this.nodes[node2].layer || this.nodesConnected(this.nodes[node1],this.nodes[node2])){
 		node1 = Math.floor(Math.random() * this.nodes.length);
 		node2 = Math.floor(Math.random() * this.nodes.length);
-
 
 	}
 
@@ -256,55 +247,10 @@ this.addConnection = function(){
 
 //Utilities
 
-/*
-	this.debugger = function(message = ""){
-
-
-		var helperArray = []
-		var hiddenNodes = 0;
-		for(var i = 0; i < this.nodes.length; i++) {
-
-			if (this.nodes[i].layer != 0 && this.nodes[i].output ==false) {
-				hiddenNodes++;
-			}
-
-			var dupe = false;
-			for(var j = 0; j < helperArray.length; j++) {
-				if(this.nodes[i].number == helperArray[j]){
-					dupe = true;
-				}
-			}
-			if(dupe == true){
-				console.log('Error: something has gone wrong node numbers');
-				console.log('this: ');
-				console.log(this);
-				console.log(message);
-				debugger;
-			}else{
-				helperArray.push(this.nodes[i].number);
-			}
-
-
-		}
-
-		if(this.layers != hiddenNodes + 2){
-			console.log('Error: something has gone wrong with layers');
-			console.log('this: ');
-			console.log(this);
-			console.log(message);
-			debugger;
-		}
-
-
-
-	}
-	*/
 
 	this.clone = function() { //Returns a copy of this genome
 		let clone = new Genome(this.inputs, this.outputs, true);
-		//clone.nodes = this.nodes.slice(0, this.nodes.length);
-		//clone.connections = this.connections.slice(0, this.connections.length);
-		
+
 		clone.nodes = [];
 		clone.connections = [];
 		this.nodes.forEach((node)=>{
@@ -436,6 +382,52 @@ this.addConnection = function(){
 
 	}
 
+
+	/*
+	//Handy debugger function
+	this.debugger = function(message = ""){
+
+
+		var helperArray = []
+		var hiddenNodes = 0;
+		for(var i = 0; i < this.nodes.length; i++) {
+
+			if (this.nodes[i].layer != 0 && this.nodes[i].output ==false) {
+				hiddenNodes++;
+			}
+
+			var dupe = false;
+			for(var j = 0; j < helperArray.length; j++) {
+				if(this.nodes[i].number == helperArray[j]){
+					dupe = true;
+				}
+			}
+			if(dupe == true){
+				console.log('Error: something has gone wrong node numbers');
+				console.log('this: ');
+				console.log(this);
+				console.log(message);
+				debugger;
+			}else{
+				helperArray.push(this.nodes[i].number);
+			}
+
+
+		}
+
+		if(this.layers != hiddenNodes + 2){
+			console.log('Error: something has gone wrong with layers');
+			console.log('this: ');
+			console.log(this);
+			console.log(message);
+			debugger;
+		}
+
+
+
+	}
+	*/
+
 }
 
 
@@ -537,3 +529,16 @@ element.parentNode.removeChild(element);
 		});
 
 	}
+
+
+
+
+
+	/*
+	//Useful function for checking infinite loops
+var calls = 0;
+function iSuspectToBeLoopingInfititely() {
+  calls += 1;
+  if (calls > 500) { debugger };
+}
+*/
