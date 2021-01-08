@@ -1,5 +1,10 @@
 
 
+//Neat but different due to:
+//innovation number implementation
+//no concept of enabled/ disabled connections, they just get deleted
+//champions get copied over even if < 5 species (but not if not improved for 15)
+
 
 //Parameters to consider:
 // - mutate node bias and mutate connection weight amounts
@@ -194,12 +199,23 @@ function Population(size) {
 				}
 			}
 
-			if(newChampNeeded == true){
+
+			if(newChampNeeded == true && this.activeSpecies[this.getSpecies(this.population[i].speciesId)].notImprovedFor < 15){
 				champions.push(this.population[i].clone());
 			}
 
 		}
 		return champions;
+	}
+
+	this.getSpecies = function(id){//returns index of species
+		for(var i = 0; i < this.activeSpecies.length; i++){
+			if(this.activeSpecies[i].id == id){
+				return i;
+			}
+
+		}
+
 	}
 
 	this.splitIntoSpecies = function(){
@@ -245,16 +261,19 @@ function Population(size) {
 
 	this.updateSpeciesFitness =function(){ 
 
+		for(var j = 0; j < this.activeSpecies.length; j++){
+			this.activeSpecies[j].notImprovedFor ++;
+		}
+
 		//TODO need to implement not improved for x
 		for(var i = 0; i < this.population.length; i++){
 			for(var j = 0; j < this.activeSpecies.length; j++){
-				console.log(this.population[i].fitness);
-				console.log(this.activeSpecies[j].maxFitness);
 				if(this.population[i].speciesId == this.activeSpecies[j].id
 					&& this.population[i].fitness > this.activeSpecies[j].maxFitness //TODO maybe round this?
 					){
 						
 						this.activeSpecies[j].maxFitness = this.population[i].fitness
+						this.activeSpecies[j].notImprovedFor = 0;
 
 				}
 			}
@@ -347,8 +366,8 @@ function Population(size) {
 		console.log('Number of species: ' + this.activeSpecies.length);
 
 
-		//this.graphData.push({x: this.generation, y: maxScore})
-		this.graphData.push({x: this.generation, y: this.activeSpecies[0].maxFitness})
+		this.graphData.push({x: this.generation, y: maxScore})
+		//this.graphData.push({x: this.generation, y: this.activeSpecies[0].maxFitness})
 
 	}
 
