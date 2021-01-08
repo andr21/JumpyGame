@@ -63,6 +63,7 @@ function Population(size) {
 
 		this.splitIntoSpecies();
 		this.calculateFitness();
+		this.updateSpeciesFitness();
 
 		
 		//some stats
@@ -224,7 +225,7 @@ function Population(size) {
 				}
 			}
 			if(newSpecies == true){ //add a new species to active species
-				this.activeSpecies.push({id:nextSpeciesID, example:this.population[i], age:0, numberActive:1});
+				this.activeSpecies.push({id:nextSpeciesID, example:this.population[i], age:0, numberActive:1 , maxFitness:0, notImprovedFor:0});
 				this.population[i].speciesId = nextSpeciesID;
 				nextSpeciesID++;
 			}
@@ -239,6 +240,26 @@ function Population(size) {
 				j--;
 			}
 		}
+
+	}
+
+	this.updateSpeciesFitness =function(){ 
+
+		//TODO need to implement not improved for x
+		for(var i = 0; i < this.population.length; i++){
+			for(var j = 0; j < this.activeSpecies.length; j++){
+				console.log(this.population[i].fitness);
+				console.log(this.activeSpecies[j].maxFitness);
+				if(this.population[i].speciesId == this.activeSpecies[j].id
+					&& this.population[i].fitness > this.activeSpecies[j].maxFitness //TODO maybe round this?
+					){
+						
+						this.activeSpecies[j].maxFitness = this.population[i].fitness
+
+				}
+			}
+		}
+
 
 	}
 
@@ -275,9 +296,9 @@ function Population(size) {
 
 
 		//Normalize
-		this.population.forEach((player) => { 
-			player.fitness /= currentMax;
-		});
+		//this.population.forEach((player) => { 
+		//	player.fitness /= currentMax;
+		//});
 		
 
 	}
@@ -326,7 +347,8 @@ function Population(size) {
 		console.log('Number of species: ' + this.activeSpecies.length);
 
 
-		this.graphData.push({x: this.generation, y: maxScore})
+		//this.graphData.push({x: this.generation, y: maxScore})
+		this.graphData.push({x: this.generation, y: this.activeSpecies[0].maxFitness})
 
 	}
 
