@@ -39,14 +39,20 @@ function Player(inp,out){
 
 
 	//Game stuff
-/* BALL GAME
+// BALL GAME
 	this.ball = new Ball();
 	this.val;
 
 	this.look = function(){
 		//TODO: inputs
 		//TODO: do we need to normalise the inputs??
-		this.vision = [-1 , -1];
+		//console.log(wallmanager.getDistanceAndHeightOfNextWall(this.ball.x)[0]);
+		this.vision = [
+		this.ball.y/c.height , //distance from top
+		this.ball.vel.y/this.ball.jumppower , //y velocity
+		wallmanager.getDistanceAndHeightOfNextWall(this.ball.x)[0] , //distance to next wall
+		wallmanager.getDistanceAndHeightOfNextWall(this.ball.x)[1] //height of next wall
+		];
 	}
 
 	this.think = function(){
@@ -54,7 +60,7 @@ function Player(inp,out){
 	}
 
 	this.move = function(){
-		this.val = this.decisions[0] >= 0 ? 1 : 0;
+		this.val = this.decisions[0] >= 0.5 ? 1 : 0;
 	}
 
 	this.update = function(){
@@ -65,6 +71,7 @@ function Player(inp,out){
 		this.ball.update();
 		this.score = this.ball.score;
 		this.dead = this.ball.dead;
+		this.ball.checkCollision(wallmanager.walls);
 
 	}
 
@@ -72,9 +79,9 @@ function Player(inp,out){
 		this.ball.draw();
 	}
 
-	*/
+	
 
-
+	/*
 	//XOR
 	this.val = 0;
 	this.correctVal;
@@ -130,6 +137,7 @@ function Player(inp,out){
 
 	}
 
+*/
 
 
 
@@ -142,13 +150,7 @@ function Player(inp,out){
 
 
 	this.calculateFitness = function(){
-		this.fitness =
-		4 -
-		Math.pow(this.brain.feedForward([0,0]) - 0, 2) -
-		Math.pow(this.brain.feedForward([1,0]) - 1, 2) -
-		Math.pow(this.brain.feedForward([0,1]) - 1, 2) -
-		Math.pow(this.brain.feedForward([1,1]) - 0, 2)
-		;
+		this.fitness = this.score;
 	}
 
 

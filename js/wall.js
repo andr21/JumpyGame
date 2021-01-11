@@ -140,4 +140,30 @@ function WallManager(){
 
 
 
+	this.getDistanceAndHeightOfNextWall = function(x){
+		
+		var validWalls = []
+		for(var i = 0; i < this.walls.length; i++) {
+			if(this.walls[i].constructor.name != "TopWall" && this.walls[i].x > x){
+
+				validWalls.push(this.walls[i]);
+
+			}
+		}
+
+		validWalls.sort((a, b) => {
+			return a.x - b.x;
+		});
+
+		if(validWalls[0]){
+		return [(validWalls[0].x - x)/c.width,validWalls[0].height/c.height];
+		} else {
+			return[1,0.5];
+		}
+
+
+	}
+
+
+
 }

@@ -43,7 +43,7 @@ function drawXOR(){
 
 var pauseXOR = true;
 var gameXOR;
-pauseplayXOR();
+//pauseplayXOR();
 
 function pauseplayXOR(){
 

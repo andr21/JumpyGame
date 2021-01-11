@@ -17,7 +17,7 @@ function Population(size) {
 	this.matingPool = [];
 
 	this.config = {
-		inputs:2,
+		inputs:4,
 		outputs:1,
 		//less the number, the more species
 		compDiffThreshold:3,
@@ -336,7 +336,12 @@ function Population(size) {
 
 		console.log('Average score: ' + this.getAverageScore());
 
+
+		var bestIndex = this.getBestScoreIndex();
+		console.log('Index: ' + bestIndex)
+		this.population[bestIndex].brain.draw();
 		//best chap
+		/*
 		var bestIndex = this.getBestScoreIndex();
 		console.log('Index: ' + bestIndex)
 		this.population[bestIndex].brain.draw();
@@ -347,7 +352,7 @@ function Population(size) {
 		console.log('1,0: ' + this.population[bestIndex].brain.feedForward([1,0]));
 		console.log('0,1: ' + this.population[bestIndex].brain.feedForward([0,1]));
 		console.log('1,1: ' + this.population[bestIndex].brain.feedForward([1,1]));
-
+*/
 
 		let maxScore = 0;
 		let minScore = 100000;

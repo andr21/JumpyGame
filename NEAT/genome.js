@@ -52,7 +52,11 @@ function Genome(inp, out, offSpring = false){
 	}
 
 	this.feedForward = function(inputValues) {
-		if (inputValues.length != this.inputs) {console.log('Error! number of inputs does not match network')}
+		if (inputValues.length != this.inputs) {
+			console.log('Error! number of inputs does not match network')
+			console.log('inputValues.length: ' + inputValues.length);
+			console.log('this.inputs: ' + this.inputs);
+	}
 
 		this.generateNetwork(); //Connect all up
 
