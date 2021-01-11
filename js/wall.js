@@ -1,7 +1,7 @@
 function Wall(){
 
 	this.width = 50;
-	this.height = Math.random()*300 + 50;
+	this.height = Math.random()*290 + 50;
 	this.x = c.width + this.width;
 	this.y = c.height - this.height;
 

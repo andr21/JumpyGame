@@ -31,7 +31,7 @@ pauseplay();
 function pauseplay(){
 
   if(pause == true){
-    game = setInterval(draw,6);
+    game = setInterval(draw,10);
     pause = false;
     console.log('Game unpaused');
   }else{

@@ -47,11 +47,13 @@ function Player(inp,out){
 		//TODO: inputs
 		//TODO: do we need to normalise the inputs??
 		//console.log(wallmanager.getDistanceAndHeightOfNextWall(this.ball.x)[0]);
+
+		var getDH = wallmanager.getDistanceAndHeightOfNextWall(this.ball.x + this.ball.radius);
 		this.vision = [
 		this.ball.y/c.height , //distance from top
 		this.ball.vel.y/this.ball.jumppower , //y velocity
-		wallmanager.getDistanceAndHeightOfNextWall(this.ball.x)[0] , //distance to next wall
-		wallmanager.getDistanceAndHeightOfNextWall(this.ball.x)[1] //height of next wall
+		getDH[0] , //distance to next wall
+		getDH[1] //height of next wall
 		];
 	}
 
