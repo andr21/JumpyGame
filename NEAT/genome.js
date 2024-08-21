@@ -171,13 +171,13 @@ this.mutate = function(){
 	}
 
 //Add a connection
-	if(Math.random() < 0.05) { //5%
+	if(Math.random() < 0.2) { //5%
 		//console.log('Add a connection');
 		this.addConnection();
 	}
 
 //Add a node
-	if(Math.random() < 0.03) { //3%
+	if(Math.random() < 0.3) { //3%
 		//console.log('Add a node');
 		this.addNode();
 	}
